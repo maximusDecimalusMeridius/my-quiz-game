@@ -1,5 +1,4 @@
-
-# Bootcamp Prework Study Guide
+# Quiz Game
 ## Description
 
 This project was started as a prework project for UW/EdX Full-Stack bootcamp.  Initially this will be used to learn a basis of knowledge, but will likely continue to evolve as the class goes on.  I've learned a number of foundational pieces of HTML, CSS, and JS that have helped build this initial webpage

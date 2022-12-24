@@ -1,17 +1,20 @@
 /* Reset CSS */
 :root {
-    --accenuate: rgba(43, 45, 66, 1);
+    --accentuate: rgba(43, 45, 66, 1);
+    --accentuate-fade: rgba(43, 45, 66, .5);
     --window: rgba(141, 153, 174, 1);
+    --dark-window: rgba(141, 153, 174, 1);
     --background: rgba(237, 242, 244, 1);
-    --mouse-over: rgba(239, 35, 60, 1);
-    --amaranth-red: rgba(217, 4, 41, 1)(217, 4, 41, 1);
+    --mouse-over: rgba(80, 86, 107, 1);
+    --bright-red: rgba(239, 35, 60, 1);
+    --windowBorder: rgb(80, 86, 107);
+
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    border: 1px solid red;
     font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -35,6 +38,125 @@ header {
 }
 
 /* Main CSS Section */
+#text-picker{
+    width: 60px;
+    height: fit-content;
+    padding: 6px 0px 10px 0px;
+    position: absolute;
+    top: 18%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+    background-color: var(--accentuate);
+}
+
+#color-menu {
+    width: 90%;
+    height: 90%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+}
+
+#color-menu > span {
+    margin: 0 auto;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 14px;
+    color: white;
+    font: bold;
+}
+
+.color-menu-items {
+    border: 1px solid red;
+    position: relative;
+}
+
+.colorCheckbox {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 38px;
+    height: 15px;
+    background-color: white;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#test {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 5px;
+    left: 1.5px
+}
+
+#checkboxOrange {
+    border: 2px solid rgb(238 93 67);
+    background-color: rgba(230, 154, 110, .5);
+}
+
+#orangeBubble {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 5px;
+    left: 1.5px;
+    background-color: rgb(238 93 67);
+}
+
+
+#checkboxBlue {
+    border: 2px solid rgb(94 183 238);
+    background-color: rgb(23, 190, 227, .5);
+}
+
+#blueBubble {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 5px;
+    left: 1.5px;
+    background-color: rgb(94 183 238);
+}
+
+#checkboxWhite {
+    border: 2px solid rgb(255 255 255);
+    background-color: rgba(238, 238, 238, 0.925);
+}
+
+#whiteBubble {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 3px;
+    left: 1.5px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid black;
+}
+
+#checkboxYellow {
+    border: 2px solid rgba(255, 230, 109, 1);
+    background-color: rgba(231, 187, 109, .5);
+}
+
+#yellowBubble {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 4px;
+    left: 1.5px;
+    background-color: rgba(255, 230, 109, 1);
+}
+
 #timer {
     width: 50px;
     height: 50px;
@@ -43,30 +165,37 @@ header {
     top: -20px;
     right: -20px;
     background-color: white;
+    display: none;
+    transition: all .5 ease-in;
 }
 
 #game-window {
     width: 80%;
-    height: 400px;
+    height: 450px;
     margin: 0 auto;
     position: relative;
     border-radius: 20px;
     margin-top: 25px;
+    border: 10px solid var(--accentuated);
+    box-shadow: inset -9px -6px 6px 0px rgba(255, 255, 255, .8),
+                inset 2px 3px 6px 5px var(--accentuate-fade);
 }
 
 #quiz-container {
     width: 80%;
-    height: 80%;
-    margin: 25px auto 0 auto;
+    height: 85%;
+    margin: 30px auto 0 auto;
     display: grid;
     grid-template:
             "quiz-header quiz-header" 60%
             "answer-1    answer-2"
             "answer-3    answer-4"
             ;
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     padding-bottom: 10px;
     max-width: 800px;
+    border-radius: 15px;
 }
 
 #quiz-header {
@@ -74,7 +203,17 @@ header {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 10px;
+    padding: 10px 0px;
+}
+
+/* div wrapper for the title for decoration */
+#header-title-div {
+    box-shadow: 3px 3px 5px black;
+    width: 325px;
+    height: 40px;
+    position: relative;
+    background-color: white;
+    border-top-left-radius: 3px;
 }
 
 #quiz-header-title {
@@ -83,6 +222,10 @@ header {
     font-family: SHARE-TECH;
     font-size: 24px;
     padding: 5px 0px 0px 5px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    
 }
 
 #quiz-header-content {
@@ -92,15 +235,40 @@ header {
     flex-grow: 1;
     position: relative;
     margin: 0 auto;
+    overflow: hidden;
+    background-color: var(--background);
+    box-shadow: 2px 2px 4px black;
+    border-radius: 5px;
+}
+
+#quiz-header-status {
+    width: 40%;
+    min-width: 150px;
+    max-width: 200px;
+    height: 20px;
+    border: 1px solid green;
+    background-color: red;
+    position: absolute;
+    bottom: -20px;
+    display: block;
+    transition: bottom .3s ease-out;
+}
+
+#quiz-header-status > div {
+
 }
 
 #quiz-question {
-    width: calc(100% - 70px);
+    width: calc(100% - 100px);
     height: 80%;
-    margin: 10px;
+    margin: 15px 25px;
+    padding: 15px;
+    background-color: black;
+    color: orange;
+    font-family: 'Courier New', Courier, monospace;
+    box-shadow: 2px 2px 5px black;
 }
 
-#quiz-question,
 #quiz-header-title {
     /* Reset textarea CSS */
     border: none;
@@ -112,16 +280,37 @@ header {
     resize: none;
 }
 
-#submit-button {
+.buttons {
     width: 50px;
     height: 25px;
+    background-color: var(--accentuate);
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
     position: absolute;
-    bottom: 10px;
+    text-align: center;
+    padding-top: 0px;
+}
+
+#prev-button{
+    top: 30px;
     right: 10px;
+    display: none;
+}
+
+#submit-button {
+    bottom: 30px;
+    right: 10px;
+    transition: all .2s linear;
+}
+
+#submit-button:hover {
+    background-color: var(--mouse-over);
 }
 
 .answer-option {
-    
+    transition: all .2s linear;
+    background-color: white;
 }
 
 #answer-1 {
@@ -165,4 +354,16 @@ footer {
     top: 15px;
     left: 90px;
     border-radius: 0px 15px 0px 0px;
+}
+
+@keyframes buttonFlow {
+    0%{
+
+    }
+    50%{
+
+    }
+    100%{
+
+    }
 }
