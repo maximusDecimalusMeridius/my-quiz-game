@@ -14,6 +14,7 @@ let answerNodes = document.getElementsByClassName("answer-options");
 let sumNode = document.getElementById("sumNode");                                   //Sum of questions user will receive
 
 let quizDeck = [];
+let playerDeck = [];
 let deckCounter = 0;
 let answerArray = [];
 
@@ -73,9 +74,6 @@ function addEmUp() {
         }
     return sum;
 }
-// welcomeMessageNode.addEventListener("change", (event) => {
-    
-// })
 
 // Add event listeners to all the checkboxes
 for(let i = 0; i < colorMenuItemNodes.length; i++){
@@ -149,17 +147,11 @@ function randomizeDeck(inputDeck, shuffles) {
             
             if(placementRandomizer === 0 && pullRandomizer === 0){
                 randomizedDeck.push(deck.pop());
-            } else 
-            
-            if(placementRandomizer === 0 && pullRandomizer === 1){
+            } else if(placementRandomizer === 0 && pullRandomizer === 1){
                 randomizedDeck.unshift(deck.pop());
-            } else
-
-            if(placementRandomizer === 1 && pullRandomizer === 0){
+            } else if(placementRandomizer === 1 && pullRandomizer === 0){
                 randomizedDeck.push(deck.shift());
-            } else
-
-            if(placementRandomizer === 1 && pullRandomizer === 1){
+            } else if(placementRandomizer === 1 && pullRandomizer === 1){
                 {randomizedDeck.unshift(deck.shift())}
             }
         }
@@ -172,18 +164,31 @@ function randomizeDeck(inputDeck, shuffles) {
     }
 }
 
+// Function to calculate a random number
 function randomNumber(num){
     return (Math.floor(Math.random() * num));
 }
 
+// Function to build the final deck once the user has submitted their desired number of questions
 function buildDeck(sum) {
-    
-    let numOfQuestions = 10;
-    let gameDeck = [];
-
-    for(let i = 0; i < numOfQuestions; i++){
-    
+    let numOfQuestions = sum;
+    let placementRandomizer, pullRandomizer = 0;
+    while(numOfQuestions > 0){
+        placementRandomizer = randomNumber(2);
+        pullRandomizer = randomNumber(2);
+        
+        if(placementRandomizer === 0 && pullRandomizer === 0){
+            playerDeck.push(quizDeck.pop());
+        } else if(placementRandomizer === 0 && pullRandomizer === 1){
+            playerDeck.unshift(quizDeck.pop());
+        } else if(placementRandomizer === 1 && pullRandomizer === 0){
+            playerDeck.push(quizDeck.shift());
+        } else if(placementRandomizer === 1 && pullRandomizer === 1){
+            playerDeck.unshift(quizDeck.shift())
+        }
+        numOfQuestions--;
     }
+
 }
 
 //Randomizing all decks and adding to final deck
@@ -204,11 +209,11 @@ function popUpStatus(message) {
     submitButton.disabled = true;
     prevButton.disabled = true;
 
-let timeOut = setTimeout(() =>{
-    quizHeaderStatusNode.setAttribute("style", "bottom: -20px");
-    submitButton.disabled = "";
-    prevButton.disabled = "";
-}, 2000);
+    let timeOut = setTimeout(() =>{
+        quizHeaderStatusNode.setAttribute("style", "bottom: -20px");
+        submitButton.disabled = "";
+        prevButton.disabled = "";
+    }, 2000);
 
 }
             
@@ -219,20 +224,37 @@ function startQuiz(){
     console.log(quizDeck);
     console.log("The deck has been loaded");
 }
+
 function drawCard(deck){
     
     if(deckCounter < deck.length){
         let currentQuestion = deck[deckCounter];
         popUpStatus();
-        quizQuestionTitleNode.innerText = `Question ${deckCounter + 1} / ${quizDeck.length}`;
+        quizQuestionTitleNode.innerText = `Question ${deckCounter + 1} / ${playerDeck.length}`;
         typeWriter(currentQuestion.content);
-        answerNodes[1].innerText = currentQuestion.answers[1];
         answerNodes[0].innerText = currentQuestion.answers[0];
+        answerNodes[1].innerText = currentQuestion.answers[1];
         answerNodes[2].innerText = currentQuestion.answers[2];
         answerNodes[3].innerText = currentQuestion.answers[3];  
         popUpStatus(currentQuestion.language);
-        deckCounter++;
+        //Start question timer
     }
+}
+
+function grader(indexOfLastQuestion) {
+    let compareArray = [];
+    
+    for(let i = 0; i < 4; i++){
+        if(answerNodes[i].dataset.selected === "true"){
+            compareArray.push(i);           //this is the user selected value
+            compareArray.push(quizDeck[i].answerIndex);             //this is the correct answer
+        }
+        answerNodes[i].dataset.selected = "false";
+        answerNodes[i].setAttribute("style", "font-weight: none; background-color: white; color: black;");
+    }
+    deckCounter++;
+    answerArray.push(compareArray);
+    console.log(answerArray);
 }
 
 // Event listener for the submit button to update the start button for the quiz
@@ -244,11 +266,15 @@ submitButton.addEventListener("click", (event) => {
         submitButton.dataset.gameMode = "game"
         submitButton.innerText = "Next";
         randomizer();
-        //buildDeck();
+        buildDeck(addEmUp());
         startQuiz();
         drawCard(quizDeck);
-    } else {
+    } else if (deckCounter < playerDeck.length -1){
+        grader(deckCounter);                        //check grades and increment deck counter;
         drawCard(quizDeck);
+    } else {
+        grader(deckCounter);
+        alert("thanks for playing!");
     }
     
 });
