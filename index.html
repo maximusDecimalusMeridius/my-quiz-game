@@ -18,10 +18,11 @@
         <div id="game-window">
             <div id="text-picker">
                 <ul id="color-menu"><span>Text</span>
-                    <li class="color-menu-items"><input id="checkboxOrange" class="colorCheckbox" type="checkbox" value="rgb(238 93 67)"><div id="orangeBubble"></div></li>
-                    <li class="color-menu-items"><input id="checkboxBlue" class="colorCheckbox" type="checkbox" value="rgb(94 183 238)" /><div id="blueBubble"></div></li>
-                    <li class="color-menu-items"><input id="checkboxWhite" class="colorCheckbox" type="checkbox" value="rgb(255 255 255)" /><div id="whiteBubble"></div></li>
-                    <li class="color-menu-items"><input id="checkboxYellow" class="colorCheckbox" type="checkbox" value="rgb(255 230 109)" /><div id="yellowBubble"></div></li>
+                    <li class="color-menu-items"><input id="checkboxOrange" class="colorCheckbox" type="checkbox" value="rgb(238 93 67)"><div id="orangeBubble" class="bubbles"></div></li>
+                    <li class="color-menu-items"><input id="checkboxBlue" class="colorCheckbox" type="checkbox" value="rgb(94 183 238)" /><div id="blueBubble" class="bubbles"></div></li>
+                    <li class="color-menu-items"><input id="checkboxWhite" class="colorCheckbox" type="checkbox" value="rgb(255 255 255)" /><div id="whiteBubble" class="bubbles"></div></li>
+                    <li class="color-menu-items"><input id="checkboxGreen" class="colorCheckbox" type="checkbox" value="rgb(150, 224, 114)" /><div id="greenBubble" class="bubbles"></div></li>
+                    <li class="color-menu-items"><input id="checkboxYellow" class="colorCheckbox" type="checkbox" value="rgb(255 230 109)" /><div id="yellowBubble" class="bubbles"></div></li>
                 </ul>
             </div>
             <div id="timer"></div>
@@ -31,18 +32,33 @@
                         <textarea readonly id="quiz-header-title">Welcome to Code Quiz!</textarea>
                     </div>
                     <div id="quiz-header-content">
-                        <div id="quiz-question">Welcome to the code quiz!  Please select at least one topic from below to begin your 20 question quiz!</div>
+                        <div id="quiz-question">Welcome to the code quiz!  Please select at least one topic from below and a minimum of 20 questions.
+                            <div id="welcome-message">
+                                <div class="deck-choices">
+                                    <input class="ranges" type="range"  min="1" max="20" value="5" id="html"/><p>5</p>
+                                </div>
+                                <div class="deck-choices">
+                                    <input class="ranges" type ="range" min="1" max="20" value="5" id="css" /><p>5</p>
+                                </div>
+                                <div class="deck-choices">
+                                    <input class="ranges" type="range" min="1" max="20" value="5" id="js" /><p>5</p>
+                                </div>
+                                <div class="deck-choices">
+                                    <input class="ranges" type="range" min="1" max="20" value="5" id="gen" /><p>5</p>
+                                </div>
+                            </div>
+                            </div>
                         <div id="quiz-header-status">
-
+                            Test
                         </div>
                         <button id="prev-button" class="buttons">Prev</button>
                         <button id="submit-button" class="buttons" data-game-mode="intro" data-just-clicked="false">Start!</button>
                     </div>
                 </div>
-                <div class="answer-option" id="answer-1"></div>
-                <div class="answer-option" id="answer-2"></div>
-                <div class="answer-option" id="answer-3"></div>
-                <div class="answer-option" id="answer-4"></div>
+                <div class="answer-option" id="answer-1" data-selected>Test text</div>
+                <div class="answer-option" id="answer-2" data-selected>Test text</div>
+                <div class="answer-option" id="answer-3" data-selected>Test text</div>
+                <div class="answer-option" id="answer-4" data-selected>Test text</div>
             </div>
         </div>
     </main>

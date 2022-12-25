@@ -8,7 +8,10 @@
     --mouse-over: rgba(80, 86, 107, 1);
     --bright-red: rgba(239, 35, 60, 1);
     --windowBorder: rgb(80, 86, 107);
+}
 
+html {
+    min-width: 375px;
 }
 
 * {
@@ -47,8 +50,8 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 3;
-    background-color: var(--accentuate);
+    z-index: 1;
+    transition: all .4s ease-in;
 }
 
 #color-menu {
@@ -60,6 +63,9 @@ header {
     justify-content: center;
     align-items: center;
     list-style-type: none;
+    background-color: var(--accentuate-fade);
+    border-radius: 5px;
+    box-shadow: 5px 5px 8px black;
 }
 
 #color-menu > span {
@@ -68,22 +74,31 @@ header {
     border-radius: 3px;
     font-size: 14px;
     color: white;
-    font: bold;
+    font-weight: bold;
+    font-family:Arial, Helvetica, sans-serif
 }
 
 .color-menu-items {
-    border: 1px solid red;
     position: relative;
+}
+
+.color-menu-items:hover,
+.color-menu-items *:hover {
+    cursor: pointer;
+}
+
+.bubbles {
+    transition-duration: .2s;
+    transition-delay: .1s;
 }
 
 .colorCheckbox {
     -webkit-appearance: none;
     appearance: none;
-    width: 38px;
+    width: 32px;
     height: 15px;
     background-color: white;
     border-radius: 15px;
-    cursor: pointer;
 }
 
 #test {
@@ -96,8 +111,8 @@ header {
 }
 
 #checkboxOrange {
-    border: 2px solid rgb(238 93 67);
-    background-color: rgba(230, 154, 110, .5);
+    border: 3px solid rgb(238 93 67);
+    background-color: rgba(230, 154, 110, 11);
 }
 
 #orangeBubble {
@@ -106,14 +121,15 @@ header {
     border-radius: 50%;
     position: absolute;
     bottom: 5px;
-    left: 1.5px;
+    left: 2px;
     background-color: rgb(238 93 67);
+    border: 1px solid black;
 }
 
 
 #checkboxBlue {
-    border: 2px solid rgb(94 183 238);
-    background-color: rgb(23, 190, 227, .5);
+    border: 3px solid rgb(3, 0, 170);
+    background-color: rgb(106, 195, 250);
 }
 
 #blueBubble {
@@ -122,39 +138,57 @@ header {
     border-radius: 50%;
     position: absolute;
     bottom: 5px;
-    left: 1.5px;
-    background-color: rgb(94 183 238);
+    left: 2px;
+    background-color: rgba(23, 190, 227, 1);
+    border: 1px solid black;
 }
 
 #checkboxWhite {
-    border: 2px solid rgb(255 255 255);
+    border: 3px solid rgb(255 255 255);
     background-color: rgba(238, 238, 238, 0.925);
 }
 
 #whiteBubble {
-    width: 15px;
-    height: 15px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     position: absolute;
-    bottom: 3px;
-    left: 1.5px;
+    bottom: 5px;
+    left: 18px;
     background-color: rgb(255, 255, 255);
     border: 1px solid black;
 }
 
 #checkboxYellow {
-    border: 2px solid rgba(255, 230, 109, 1);
-    background-color: rgba(231, 187, 109, .5);
+    border: 3px solid rgba(255, 230, 109, 1);
+    background-color: rgba(240, 225, 167, .8);
 }
 
 #yellowBubble {
-    width: 13px;
-    height: 13px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     position: absolute;
-    bottom: 4px;
-    left: 1.5px;
+    bottom: 5px;
+    left: 2px;
     background-color: rgba(255, 230, 109, 1);
+    border: 1px solid black;
+}
+
+#checkboxGreen {
+    border: 3px solid rgb(48, 143, 0);
+    background-color: rgb(175, 219, 154);
+}
+
+#greenBubble {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 5px;
+    left: 2px;
+    background-color: rgba(84, 177, 38, 1);
+    border: 1px solid black;
 }
 
 #timer {
@@ -175,8 +209,7 @@ header {
     margin: 0 auto;
     position: relative;
     border-radius: 20px;
-    margin-top: 25px;
-    border: 10px solid var(--accentuated);
+    border: 5px solid var(--accentuate);
     box-shadow: inset -9px -6px 6px 0px rgba(255, 255, 255, .8),
                 inset 2px 3px 6px 5px var(--accentuate-fade);
 }
@@ -209,7 +242,8 @@ header {
 /* div wrapper for the title for decoration */
 #header-title-div {
     box-shadow: 3px 3px 5px black;
-    width: 325px;
+    min-width: 150px;
+    max-width: 325px;
     height: 40px;
     position: relative;
     background-color: white;
@@ -225,11 +259,11 @@ header {
     position: absolute;
     bottom: 0;
     right: 0;
-    
 }
 
 #quiz-header-content {
-    width: 90%;
+    width: 85%;
+    min-width: 300px;
     min-height: 100px;
     height: fit-content;
     flex-grow: 1;
@@ -239,6 +273,7 @@ header {
     background-color: var(--background);
     box-shadow: 2px 2px 4px black;
     border-radius: 5px;
+    font-size: 18px;
 }
 
 #quiz-header-status {
@@ -254,22 +289,50 @@ header {
     transition: bottom .3s ease-out;
 }
 
-#quiz-header-status > div {
-
-}
-
 #quiz-question {
     width: calc(100% - 100px);
     height: 80%;
     margin: 15px 25px;
     padding: 15px;
     background-color: black;
-    color: orange;
-    font-family: 'Courier New', Courier, monospace;
+    color: white;
+    font-family: monospace, 'Courier New', Courier;
+    font-weight: bold;
     box-shadow: 2px 2px 5px black;
 }
 
-#quiz-header-title {
+#welcome-message {
+    width: 85%;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+.deck-choices {
+    width: 20%;
+    height: 50px;
+    border: 1px solid green;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.ranges {
+    width: 80%;
+
+}
+
+.deck-choices p {
+    display: inline;
+}
+
+#quiz-header-title,
+.ranges {
     /* Reset textarea CSS */
     border: none;
     overflow: auto;
@@ -289,7 +352,6 @@ header {
     font-size: 12px;
     position: absolute;
     text-align: center;
-    padding-top: 0px;
 }
 
 #prev-button{
@@ -311,6 +373,7 @@ header {
 .answer-option {
     transition: all .2s linear;
     background-color: white;
+    box-shadow: inset 2px 2px black;
 }
 
 #answer-1 {
@@ -337,7 +400,6 @@ header {
 footer {
     width: 100%;
     height: 100px;
-    border: 1px solid red;
 }
 
 #hint-bubble {
@@ -356,14 +418,86 @@ footer {
     border-radius: 0px 15px 0px 0px;
 }
 
-@keyframes buttonFlow {
-    0%{
-
+@media screen and (max-width: 1000px){
+    #quiz-header-content{
+        font-size: 16px;
     }
-    50%{
+}
 
+@media screen and (max-width: 875px){
+    #quiz-header-content {
+        font-size: 14px;
     }
-    100%{
+}
 
+@media screen and (max-width: 535px){
+    #quiz-header {
+        justify-content: center;
+    }
+
+    #quiz-header-title-div {
+        margin: 0 auto;
+        width: 100px;
+    }
+
+    #quiz-header-title {
+        width: 100%;
+        font-size: 18px;
+        text-align: center;        
+    }
+
+    #quiz-question {
+        margin: 4px auto;
+        padding: 10px;
+        width: 90%;
+    }
+
+    #quiz-header-content {
+        font-size: 12px;
+        min-width: 150px;
+    }
+    
+    #quiz-container {
+        grid-template:
+            "quiz-header" 80%
+            "answer-1 answer-2"
+            "answer-3 answer-4"
+            ;
+        margin: 10px auto;
+    }
+
+    #prev-button{
+        top: 124px;
+        right: "";
+        left: 10px;
+        display: none;
+    }
+    
+    #submit-button {
+        bottom: 0;
+        right: 10px;
+        transition: all .2s linear;
+    }
+
+    #text-picker{
+        top: 92%;
+        left: calc(50% - 125px);
+        width: 250px;
+        height: 40px;
+    }
+    
+    #color-menu{
+        flex-direction: row;
+        flex-wrap: nowrap;
+        height: 40px;
+        transform: scale(.8);
+    }
+
+    .color-menu-items {
+        rotate: -90deg;
+    }
+
+    #answer-1, #answer-2, #answer-3, #answer-4 {
+        border-radius: 5px 5px 5px 5px;
     }
 }
