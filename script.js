@@ -1,54 +1,81 @@
 // Latching onto our HTML friends
-let colorMenuItemNodes = document.getElementsByClassName("color-menu-items");
-let colorCheckboxNodes = document.getElementsByClassName("colorCheckbox");               //Color checkboxes for users to choose the text color;
 let welcomeMessageNode = document.getElementById("welcome-message");          //Welcome message window
-let rangeBoxes = document.getElementsByClassName("ranges");                   //Range sliders in quiz intro for selecting number of questions
 let quizContainerNode = document.getElementById("quiz-container");         //Main quiz container and window
-let quizQuestionNode = document.getElementById("quiz-question");       //Quiz Question where most of the content populates
+let quizQuestionNode = document.getElementById("quiz-question-text");       //Quiz Question where most of the content populates
+let quizQuestionTitleNode = document.getElementById("quiz-header-title");   //Welcome title and "Question" title
 let prevButton = document.getElementById("prev-button");           //Submit button that displays inside of the quiz question node when called (display none/block)
 let submitButton = document.getElementById("submit-button");           //Submit button that displays inside of the quiz question node when called (display none/block)
 let quizHeaderStatusNode = document.getElementById("quiz-header-status");   //Pop up in the quiz window that will display various status messages
 
+let colorMenuItemNodes = document.getElementsByClassName("color-menu-items");       //Divs that hold the check boxes and bubbles for color switching
+let colorCheckboxNodes = document.getElementsByClassName("colorCheckbox");               //Color checkboxes for users to choose the text color;
+let rangeBoxes = document.getElementsByClassName("ranges");                   //Range sliders in quiz intro for selecting number of questions
+let answerNodes = document.getElementsByClassName("answer-options");
+let sumNode = document.getElementById("sumNode");                                   //Sum of questions user will receive
+
 let quizDeck = [];
+let deckCounter = 0;
+let answerArray = [];
 
 // Event listeners to make answer options glow on mouseover with delegation
 quizContainerNode.addEventListener("mouseover", (event) => {
-    console.log(event.target);
-    if(event.target.className === "answer-option" && submitButton.dataset.gameMode === "game"){
-        event.target.setAttribute("style", "box-shadow: inset 0px 0px 4px 4px red");
+    console.log(event);
+    if(event.target.className === "answer-options" && submitButton.dataset.gameMode === "game" && event.target.dataset.selected != "true"){
+        event.target.setAttribute("style", "box-shadow: inset 0px 0px 4px 0px rgb(76 12 89)");
     }
 });
 
+// Event listener to clear box-shadow.  When font-style is set to none, it still seems to clear out my event listener without
+// explicitly changing the box-shadow.  Oddly if I remove this mouseout event, formatting stays when I mouse out.
 quizContainerNode.addEventListener("mouseout", (event) => {
-    if(event.target.className === "answer-option" && (event.target.dataset.selected != true)){
-        event.target.setAttribute("style", "box-shadow: 0px;");
+    console.log(event.target.dataset.selected);
+    if(event.target.className === "answer-options" && event.target.dataset.selected != "true"){
+        event.target.setAttribute("style", "font-style: none;");
     }
 });
 
+// Event listener that looks for clicks on answer nodes.  If an answer is already selected and clicked again, it will be deselect.
+// If another box is selected, the listener loops over the array of answers and reset their formatting and selected data-attr before 
+// assigning the new value and formatting.
 quizContainerNode.addEventListener("click", (event) => {
-    if(event.target.className === "answer-option"){
-        event.target.setAttribute("style", "border: 2px solid blue");
-        event.target.setAttribute("dataset", "selected: true");
+    console.log(event.target);
+    
+    if(event.target.className === "answer-options"){
+        if(event.target.style.fontWeight != "bold"){
+            for(let i = 0; i < answerNodes.length; i++){
+                answerNodes[i].setAttribute("style", "font-weight: none; background-color: white; color: black;");
+                answerNodes[i].dataset.selected = "false";
+            }
+            event.target.setAttribute("style", "font-weight: bold; background-color: rgb(76 12 89); color: white;");
+            event.target.dataset.selected = "true";
+        } else {
+            event.target.setAttribute("style", "font-weight: none; background-color: white; color: black;");
+            event.target.dataset.selected = "false";
+        }
     }
-})
+    
+});
 
 welcomeMessageNode.addEventListener("input", (event) => {
     
     if(event.target.className == "ranges"){
         event.target.nextSibling.innerText = event.target.value;
+        sumNode.innerText = addEmUp();
     }
 })
 
-welcomeMessageNode.addEventListener("change", (event) => {
+// Function to get all values from the ranges on HTML, add them up, and output them to the screen
+// in real-time
+function addEmUp() {
     let sum = 0;
-    
-    if(event.target.className == "ranges"){
         for(let i = 0; i < 4; i++){
             sum = sum + parseInt(rangeBoxes[i].value);
         }
-        console.log(sum);
-    }
-})
+    return sum;
+}
+// welcomeMessageNode.addEventListener("change", (event) => {
+    
+// })
 
 // Add event listeners to all the checkboxes
 for(let i = 0; i < colorMenuItemNodes.length; i++){
@@ -145,33 +172,22 @@ function randomizeDeck(inputDeck, shuffles) {
     }
 }
 
-function startQuiz(){
-    welcomeMessageNode.setAttribute("style", "display: none");
-    randomQuestion();
-    popUpStatus();
-    console.log(quizDeck);
-    console.log("The deck has been loaded");
-}
-
-function randomQuestion() {
-    submitButton.innerText = "Next";
-    typeWriter(htmlQuestions[Math.floor(Math.random() * htmlQuestions.length)].content);
-}
-
 function randomNumber(num){
     return (Math.floor(Math.random() * num));
 }
 
-function buildDeck() {
+function buildDeck(sum) {
     
     let numOfQuestions = 10;
     let gameDeck = [];
 
     for(let i = 0; i < numOfQuestions; i++){
-        
+    
     }
 }
 
+//Randomizing all decks and adding to final deck
+//replace with function to take selection from user
 function randomizer(){
     randomizeDeck(htmlQuestions, randomNumber(7));
     randomizeDeck(jsQuestions, randomNumber(7));
@@ -180,32 +196,44 @@ function randomizer(){
 }
 
 // Function to randomize the deck passed in arguments and shuffles the random deck shuffles times
-    
-function popUpStatus() {
-    
-    if(submitButton.dataset.gameMode != "intro"){
-        quizHeaderStatusNode.setAttribute("style", "bottom: 30px");
-        submitButton.disabled = true;
-        prevButton.disabled = true;
-    } else { 
-        
-        submitButton.dataset.gameMode = "game";
-        submitButton.disabled = true;
-        prevButton.disabled = true;
-        let timeOut = setTimeout(() => {
-            submitButton.disabled = "";
-            prevButton.disabled = "";
-        }, 2000);
-    }
-    
-    let timeOut = setTimeout(() =>{
-        quizHeaderStatusNode.setAttribute("style", "bottom: -20px");
-        submitButton.disabled = "";
-        prevButton.disabled = "";
-    }, 2000);
-    
-}
 
+function popUpStatus(message) {
+
+    quizHeaderStatusNode.innerText = message;
+    quizHeaderStatusNode.setAttribute("style", "bottom: 30px");
+    submitButton.disabled = true;
+    prevButton.disabled = true;
+
+let timeOut = setTimeout(() =>{
+    quizHeaderStatusNode.setAttribute("style", "bottom: -20px");
+    submitButton.disabled = "";
+    prevButton.disabled = "";
+}, 2000);
+
+}
+            
+function startQuiz(){
+    welcomeMessageNode.setAttribute("style", "display: none");
+    // randomQuestion();
+    
+    console.log(quizDeck);
+    console.log("The deck has been loaded");
+}
+function drawCard(deck){
+    
+    if(deckCounter < deck.length){
+        let currentQuestion = deck[deckCounter];
+        popUpStatus();
+        quizQuestionTitleNode.innerText = `Question ${deckCounter + 1} / ${quizDeck.length}`;
+        typeWriter(currentQuestion.content);
+        answerNodes[1].innerText = currentQuestion.answers[1];
+        answerNodes[0].innerText = currentQuestion.answers[0];
+        answerNodes[2].innerText = currentQuestion.answers[2];
+        answerNodes[3].innerText = currentQuestion.answers[3];  
+        popUpStatus(currentQuestion.language);
+        deckCounter++;
+    }
+}
 
 // Event listener for the submit button to update the start button for the quiz
 // and display prevButton
@@ -213,10 +241,15 @@ submitButton.addEventListener("click", (event) => {
     event.preventDefault;
     if(submitButton.innerText === "Start!"){
         prevButton.setAttribute("style", "display: block;")
+        submitButton.dataset.gameMode = "game"
         submitButton.innerText = "Next";
+        randomizer();
+        //buildDeck();
+        startQuiz();
+        drawCard(quizDeck);
+    } else {
+        drawCard(quizDeck);
     }
-    randomizer();
-    startQuiz();
     
 });
 
@@ -248,14 +281,14 @@ submitButton.addEventListener("click", (event) => {
 
 // Quiz question class
 class quizQuestion {
-    constructor(title, content, answers, answerIndex, hint, googleLink, techdocLink){
+    constructor(title, content, answers, answerIndex, hint, googleLink, language){
         this.title = title;
         this.content = content;
         this.answers = answers;
         this.answerIndex = answerIndex;
         this.hint = hint;
         this.googleLink = googleLink;
-        this.techdocLink = techdocLink;
+        this.language = language;
     }
 }
 
@@ -271,7 +304,7 @@ let htmlQuestion1 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 
 let htmlQuestion2 = new quizQuestion(
@@ -286,7 +319,7 @@ let htmlQuestion2 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 
 let htmlQuestion3 = new quizQuestion(
@@ -301,7 +334,7 @@ let htmlQuestion3 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 
 let htmlQuestion4 = new quizQuestion(
@@ -316,7 +349,7 @@ let htmlQuestion4 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 
 let htmlQuestion5 = new quizQuestion(
@@ -331,7 +364,7 @@ let htmlQuestion5 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 
 let htmlQuestion6 = new quizQuestion(
@@ -346,7 +379,7 @@ let htmlQuestion6 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 
 let htmlQuestion7 = new quizQuestion(
@@ -361,7 +394,7 @@ let htmlQuestion7 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 let htmlQuestion8 = new quizQuestion(
     "Question 8",
@@ -375,7 +408,7 @@ let htmlQuestion8 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 let htmlQuestion9 = new quizQuestion(
     "Question 9",
@@ -389,7 +422,7 @@ let htmlQuestion9 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 let htmlQuestion10 = new quizQuestion(
     "Question 10",
@@ -403,7 +436,7 @@ let htmlQuestion10 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 let htmlQuestion11 = new quizQuestion(
     "Question 11",
@@ -417,7 +450,7 @@ let htmlQuestion11 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 let htmlQuestion12 = new quizQuestion(
     "Question 12",
@@ -431,7 +464,7 @@ let htmlQuestion12 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 let htmlQuestion13 = new quizQuestion(
     "Question 13",
@@ -445,7 +478,7 @@ let htmlQuestion13 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 let htmlQuestion14 = new quizQuestion(
     "Question 14",
@@ -459,7 +492,7 @@ let htmlQuestion14 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 let htmlQuestion15 = new quizQuestion(
     "Question 15",
@@ -473,7 +506,7 @@ let htmlQuestion15 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 let htmlQuestion16 = new quizQuestion(
     "Question 16",
@@ -487,7 +520,7 @@ let htmlQuestion16 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 let htmlQuestion17 = new quizQuestion(
     "Question 17",
@@ -501,7 +534,7 @@ let htmlQuestion17 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 let htmlQuestion18 = new quizQuestion(
     "Question 18",
@@ -515,7 +548,7 @@ let htmlQuestion18 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 let htmlQuestion19 = new quizQuestion(
     "Question 19",
@@ -529,7 +562,7 @@ let htmlQuestion19 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 let htmlQuestion20 = new quizQuestion(
     "Question 20",
@@ -543,7 +576,7 @@ let htmlQuestion20 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "HTML"
 )
 
 // JavaScript Questions
@@ -559,7 +592,7 @@ let jsQuestion1 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 
 let jsQuestion2 = new quizQuestion(
@@ -574,7 +607,7 @@ let jsQuestion2 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 
 let jsQuestion3 = new quizQuestion(
@@ -589,7 +622,7 @@ let jsQuestion3 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 
 let jsQuestion4 = new quizQuestion(
@@ -604,7 +637,7 @@ let jsQuestion4 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 
 let jsQuestion5 = new quizQuestion(
@@ -619,7 +652,7 @@ let jsQuestion5 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 
 let jsQuestion6 = new quizQuestion(
@@ -634,7 +667,7 @@ let jsQuestion6 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 
 let jsQuestion7 = new quizQuestion(
@@ -649,7 +682,7 @@ let jsQuestion7 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 let jsQuestion8 = new quizQuestion(
     "Question 8",
@@ -663,7 +696,7 @@ let jsQuestion8 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 let jsQuestion9 = new quizQuestion(
     "Question 9",
@@ -677,7 +710,7 @@ let jsQuestion9 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 let jsQuestion10 = new quizQuestion(
     "Question 10",
@@ -691,7 +724,7 @@ let jsQuestion10 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 let jsQuestion11 = new quizQuestion(
     "Question 11",
@@ -705,7 +738,7 @@ let jsQuestion11 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 let jsQuestion12 = new quizQuestion(
     "Question 12",
@@ -719,7 +752,7 @@ let jsQuestion12 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 let jsQuestion13 = new quizQuestion(
     "Question 13",
@@ -733,7 +766,7 @@ let jsQuestion13 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 let jsQuestion14 = new quizQuestion(
     "Question 14",
@@ -747,7 +780,7 @@ let jsQuestion14 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 let jsQuestion15 = new quizQuestion(
     "Question 15",
@@ -761,7 +794,7 @@ let jsQuestion15 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 let jsQuestion16 = new quizQuestion(
     "Question 16",
@@ -775,7 +808,7 @@ let jsQuestion16 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 let jsQuestion17 = new quizQuestion(
     "Question 17",
@@ -789,7 +822,7 @@ let jsQuestion17 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 let jsQuestion18 = new quizQuestion(
     "Question 18",
@@ -803,7 +836,7 @@ let jsQuestion18 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 let jsQuestion19 = new quizQuestion(
     "Question 19",
@@ -817,7 +850,7 @@ let jsQuestion19 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 let jsQuestion20 = new quizQuestion(
     "Question 20",
@@ -831,7 +864,7 @@ let jsQuestion20 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "JavaScript"
 )
 
 // CSS Questions
@@ -847,7 +880,7 @@ let cssQuestion1 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 
 let cssQuestion2 = new quizQuestion(
@@ -862,7 +895,7 @@ let cssQuestion2 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 
 let cssQuestion3 = new quizQuestion(
@@ -877,7 +910,7 @@ let cssQuestion3 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 
 let cssQuestion4 = new quizQuestion(
@@ -892,7 +925,7 @@ let cssQuestion4 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 
 let cssQuestion5 = new quizQuestion(
@@ -907,7 +940,7 @@ let cssQuestion5 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 
 let cssQuestion6 = new quizQuestion(
@@ -922,7 +955,7 @@ let cssQuestion6 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 
 let cssQuestion7 = new quizQuestion(
@@ -937,7 +970,7 @@ let cssQuestion7 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 let cssQuestion8 = new quizQuestion(
     "Question 8",
@@ -951,7 +984,7 @@ let cssQuestion8 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 let cssQuestion9 = new quizQuestion(
     "Question 9",
@@ -965,7 +998,7 @@ let cssQuestion9 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 let cssQuestion10 = new quizQuestion(
     "Question 10",
@@ -979,7 +1012,7 @@ let cssQuestion10 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 let cssQuestion11 = new quizQuestion(
     "Question 11",
@@ -993,7 +1026,7 @@ let cssQuestion11 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 let cssQuestion12 = new quizQuestion(
     "Question 12",
@@ -1007,7 +1040,7 @@ let cssQuestion12 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 let cssQuestion13 = new quizQuestion(
     "Question 13",
@@ -1021,7 +1054,7 @@ let cssQuestion13 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 let cssQuestion14 = new quizQuestion(
     "Question 14",
@@ -1035,7 +1068,7 @@ let cssQuestion14 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 let cssQuestion15 = new quizQuestion(
     "Question 15",
@@ -1049,7 +1082,7 @@ let cssQuestion15 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 let cssQuestion16 = new quizQuestion(
     "Question 16",
@@ -1063,7 +1096,7 @@ let cssQuestion16 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 let cssQuestion17 = new quizQuestion(
     "Question 17",
@@ -1077,7 +1110,7 @@ let cssQuestion17 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 let cssQuestion18 = new quizQuestion(
     "Question 18",
@@ -1091,7 +1124,7 @@ let cssQuestion18 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 let cssQuestion19 = new quizQuestion(
     "Question 19",
@@ -1105,7 +1138,7 @@ let cssQuestion19 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 let cssQuestion20 = new quizQuestion(
     "Question 20",
@@ -1119,7 +1152,7 @@ let cssQuestion20 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "CSS"
 )
 
 // General Coding Questions
@@ -1135,7 +1168,7 @@ let genQuestion1 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 
 let genQuestion2 = new quizQuestion(
@@ -1150,7 +1183,7 @@ let genQuestion2 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 
 let genQuestion3 = new quizQuestion(
@@ -1165,7 +1198,7 @@ let genQuestion3 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 
 let genQuestion4 = new quizQuestion(
@@ -1180,7 +1213,7 @@ let genQuestion4 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 
 let genQuestion5 = new quizQuestion(
@@ -1195,7 +1228,7 @@ let genQuestion5 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 
 let genQuestion6 = new quizQuestion(
@@ -1210,7 +1243,7 @@ let genQuestion6 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 
 let genQuestion7 = new quizQuestion(
@@ -1225,7 +1258,7 @@ let genQuestion7 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 let genQuestion8 = new quizQuestion(
     "Question 8",
@@ -1239,7 +1272,7 @@ let genQuestion8 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 let genQuestion9 = new quizQuestion(
     "Question 9",
@@ -1253,7 +1286,7 @@ let genQuestion9 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 let genQuestion10 = new quizQuestion(
     "Question 10",
@@ -1267,7 +1300,7 @@ let genQuestion10 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 let genQuestion11 = new quizQuestion(
     "Question 11",
@@ -1281,7 +1314,7 @@ let genQuestion11 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 let genQuestion12 = new quizQuestion(
     "Question 12",
@@ -1295,7 +1328,7 @@ let genQuestion12 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 let genQuestion13 = new quizQuestion(
     "Question 13",
@@ -1309,7 +1342,7 @@ let genQuestion13 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 let genQuestion14 = new quizQuestion(
     "Question 14",
@@ -1323,7 +1356,7 @@ let genQuestion14 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 let genQuestion15 = new quizQuestion(
     "Question 15",
@@ -1337,7 +1370,7 @@ let genQuestion15 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 let genQuestion16 = new quizQuestion(
     "Question 16",
@@ -1351,7 +1384,7 @@ let genQuestion16 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 let genQuestion17 = new quizQuestion(
     "Question 17",
@@ -1365,7 +1398,7 @@ let genQuestion17 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 let genQuestion18 = new quizQuestion(
     "Question 18",
@@ -1379,7 +1412,7 @@ let genQuestion18 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 let genQuestion19 = new quizQuestion(
     "Question 19",
@@ -1393,7 +1426,7 @@ let genQuestion19 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 let genQuestion20 = new quizQuestion(
     "Question 20",
@@ -1407,7 +1440,7 @@ let genQuestion20 = new quizQuestion(
     3,
     "Here is your hint",
     "Google Link",
-    "TechDocLink"
+    "General"
 )
 
 let htmlQuestions = [htmlQuestion1, htmlQuestion2, htmlQuestion3, htmlQuestion4, htmlQuestion5, htmlQuestion6, htmlQuestion7, htmlQuestion8, htmlQuestion9, htmlQuestion10,

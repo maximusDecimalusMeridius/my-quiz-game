@@ -2,12 +2,25 @@
 :root {
     --accentuate: rgba(43, 45, 66, 1);
     --accentuate-fade: rgba(43, 45, 66, .5);
-    --window: rgba(141, 153, 174, 1);
+    --window: rgb(215 242 228);
+    /* --window: rgba(141, 153, 174, 1); */
     --dark-window: rgba(141, 153, 174, 1);
     --background: rgba(237, 242, 244, 1);
     --mouse-over: rgba(80, 86, 107, 1);
     --bright-red: rgba(239, 35, 60, 1);
     --windowBorder: rgb(80, 86, 107);
+
+    --turquoise: rgb(200 241 239);
+    --light-blue: rgb(203 237 249);
+    --adamantite: rgb(197 225 211);
+    --light-orange: rgb(250 222 192);
+    --light-purple: rgb(248 222 253);
+
+    --html-yellow: #FDA50D;
+    --js-pink: #C92AB4;
+    --css-blue: #155BD4;
+    --gen-green: #51ED66;
+
 }
 
 html {
@@ -31,8 +44,18 @@ img, video * {
     src: url("../fonts/ShareTechMono-Regular.ttf");
 }
 
+@font-face {
+    font-family: ASAP;
+    src: url("../fonts/Asap-Regular.ttf");
+}
+
+@font-face {
+    font-family: FUGAZ_ONE;
+    src: url("../fonts/FugazOne-Regular.ttf");
+}
+
 body {
-    background-color: rgb(237, 242, 244);
+    background-color: var(--light-purple);
 }
 
 header {
@@ -87,11 +110,6 @@ header {
     cursor: pointer;
 }
 
-.bubbles {
-    transition-duration: .2s;
-    transition-delay: .1s;
-}
-
 .colorCheckbox {
     -webkit-appearance: none;
     appearance: none;
@@ -99,15 +117,6 @@ header {
     height: 15px;
     background-color: white;
     border-radius: 15px;
-}
-
-#test {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    position: absolute;
-    bottom: 5px;
-    left: 1.5px
 }
 
 #checkboxOrange {
@@ -203,14 +212,27 @@ header {
     transition: all .5 ease-in;
 }
 
+#sumNode {
+    width: 50px;
+    height: 50px;
+    border: 1px solid red;
+    position: absolute;
+    top: 180px;
+    right: 10px;
+    font-family: FUGAZ_ONE, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: center;
+    padding-top: 6px;
+    font-size: 24px;
+}
+
 #game-window {
     width: 80%;
-    height: 450px;
+    height: 600px;
     margin: 0 auto;
     position: relative;
     border-radius: 20px;
     border: 5px solid var(--accentuate);
-    box-shadow: inset -9px -6px 6px 0px rgba(255, 255, 255, .8),
+    box-shadow: inset -9px -6px 6px 0px var(--light-purple),
                 inset 2px 3px 6px 5px var(--accentuate-fade);
 }
 
@@ -220,7 +242,7 @@ header {
     margin: 30px auto 0 auto;
     display: grid;
     grid-template:
-            "quiz-header quiz-header" 60%
+            "quiz-header quiz-header" 70%
             "answer-1    answer-2"
             "answer-3    answer-4"
             ;
@@ -229,6 +251,7 @@ header {
     padding-bottom: 10px;
     max-width: 800px;
     border-radius: 15px;
+    padding: 5px;
 }
 
 #quiz-header {
@@ -281,39 +304,47 @@ header {
     min-width: 150px;
     max-width: 200px;
     height: 20px;
-    border: 1px solid green;
-    background-color: red;
+    background-color: var(--accentuate);
+    color: white;
     position: absolute;
     bottom: -20px;
     display: block;
-    transition: bottom .3s ease-out;
+    transition: bottom .2s ease-in;
+    border-radius: 0px 3px 3px 0px;
 }
 
 #quiz-question {
     width: calc(100% - 100px);
     height: 80%;
     margin: 15px 25px;
-    padding: 15px;
     background-color: black;
     color: white;
     font-family: monospace, 'Courier New', Courier;
     font-weight: bold;
     box-shadow: 2px 2px 5px black;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#quiz-question-text {
+    margin: 0px 15px 15px 15px;
+    padding-top: 15px;
 }
 
 #welcome-message {
-    width: 85%;
+    width: 100%;
     height: 50px;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
-    margin: 0 auto;
-    padding-top: 20px;
 }
 
 .deck-choices {
-    width: 20%;
+    flex-grow: 1;
+    max-width: 50%;
     height: 50px;
     border: 1px solid green;
     display: flex;
@@ -326,6 +357,24 @@ header {
     width: 80%;
 
 }
+
+#html + p {
+    color: var(--html-yellow);
+
+}
+
+#js + p {
+    color: var(--js-pink);
+}
+
+#css + p {
+    color: var(--css-blue);
+}
+
+#gen + p {
+    color: var(--gen-green)
+}
+
 
 .deck-choices p {
     display: inline;
@@ -370,30 +419,40 @@ header {
     background-color: var(--mouse-over);
 }
 
-.answer-option {
-    transition: all .2s linear;
+.answer-options {
+    width: 95%;
+    height: 95%;
     background-color: white;
-    box-shadow: inset 2px 2px black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: ASAP, Calibrai, Arial, Helvetica, sans-serif;
+    font-size: 18px;
 }
 
 #answer-1 {
     grid-area: answer-1;
-    border-radius: 0px 5px 5px 0px;
+    border-radius: 5px 5px 0px 5px;
 }
 
 #answer-2 {
     grid-area: answer-2;
-    border-radius: 5px 0px 0px 5px;
+    border-radius: 5px 5px 5px 0px;
 }
 
 #answer-3 {
     grid-area: answer-3;
-    border-radius: 0px 5px 5px 0px;
+    border-radius: 5px 0px 5px 5px;
 }
 
 #answer-4 {
     grid-area: answer-4;
-    border-radius: 5px 0px 0px 5px;
+    border-radius: 0px 5px 5px 5px;
+}
+
+.answer-text {
+    width: 90%;
+    height: 90%;
 }
 
 /* Footer CSS */
@@ -428,9 +487,19 @@ footer {
     #quiz-header-content {
         font-size: 14px;
     }
+
+    #welcome-message {
+        flex-basis: 50%;
+        flex-wrap: wrap;
+    }
 }
 
 @media screen and (max-width: 535px){
+    
+    #game-window {
+        width: 95%;
+    }
+
     #quiz-header {
         justify-content: center;
     }
@@ -464,17 +533,24 @@ footer {
             "answer-3 answer-4"
             ;
         margin: 10px auto;
+        width: 95%;
     }
 
     #prev-button{
-        top: 124px;
-        right: "";
+        top: 244px;
         left: 10px;
         display: none;
     }
     
+    #sumNode {
+        width: 40px;
+        height: 40px;
+        top: calc(100% - 40px);
+        right: calc(50% - 20px);
+    }
+
     #submit-button {
-        bottom: 0;
+        bottom: 5px;
         right: 10px;
         transition: all .2s linear;
     }

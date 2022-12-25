@@ -32,33 +32,43 @@
                         <textarea readonly id="quiz-header-title">Welcome to Code Quiz!</textarea>
                     </div>
                     <div id="quiz-header-content">
-                        <div id="quiz-question">Welcome to the code quiz!  Please select at least one topic from below and a minimum of 20 questions.
+                        <div id="quiz-question">
+                            <div id="quiz-question-text">
+                                Welcome to the code quiz!  Please select at least one topic from below and a minimum of 20 questions.
+                            </div>
                             <div id="welcome-message">
                                 <div class="deck-choices">
-                                    <input class="ranges" type="range"  min="1" max="20" value="5" id="html"/><p>5</p>
+                                    <input class="ranges" type="range"  min="0" max="20" value="5" id="html"/><p class="no-select">HTML</p>
                                 </div>
                                 <div class="deck-choices">
-                                    <input class="ranges" type ="range" min="1" max="20" value="5" id="css" /><p>5</p>
+                                    <input class="ranges" type ="range" min="0" max="20" value="5" id="css" /><p class="no-select">Java</p>
                                 </div>
                                 <div class="deck-choices">
-                                    <input class="ranges" type="range" min="1" max="20" value="5" id="js" /><p>5</p>
+                                    <input class="ranges" type="range" min="0" max="20" value="5" id="js" /><p class="no-select">CSS</p>
                                 </div>
                                 <div class="deck-choices">
-                                    <input class="ranges" type="range" min="1" max="20" value="5" id="gen" /><p>5</p>
+                                    <input class="ranges" type="range" min="0" max="20" value="5" id="gen" /><p class="no-select">General</p>
                                 </div>
                             </div>
-                            </div>
-                        <div id="quiz-header-status">
-                            Test
                         </div>
+                        <div id="sumNode"></div>
+                        <div id="quiz-header-status"></div>
                         <button id="prev-button" class="buttons">Prev</button>
                         <button id="submit-button" class="buttons" data-game-mode="intro" data-just-clicked="false">Start!</button>
                     </div>
                 </div>
-                <div class="answer-option" id="answer-1" data-selected>Test text</div>
-                <div class="answer-option" id="answer-2" data-selected>Test text</div>
-                <div class="answer-option" id="answer-3" data-selected>Test text</div>
-                <div class="answer-option" id="answer-4" data-selected>Test text</div>
+                <div class="answer-options" id="answer-1" data-selected="false">
+                    Text  
+                </div>
+                <div class="answer-options" id="answer-2" data-selected="false">
+                    Text   
+                </div>
+                <div class="answer-options" id="answer-3" data-selected="false">
+                    Text  
+                </div>
+                <div class="answer-options" id="answer-4" data-selected="false">
+                    Text   
+                </div>
             </div>
         </div>
     </main>

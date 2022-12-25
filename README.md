@@ -31,6 +31,13 @@ MIT License - Please refer to the LICENSE in the repo.
 Share Tech Mono font
 Copyright (c) 2012, Carrois Type Design, Ralph du Carrois (post@carrois.com www.carrois.com), with Reserved Font Name 'Share'
 
+ASAP Font
+Copyright 2018 The Asap Project Authors (https://github.com/Omnibus-Type/Asap)
+
+Fugaz One Font
+Copyright (c) 2011 by LatinoType Limitada (luciano@latinotype.com),
+with Reserved Font Names "Fugaz One"
+
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
 http://scripts.sil.org/OFL
