@@ -20,7 +20,6 @@ let answerArray = [];
 
 // Event listeners to make answer options glow on mouseover with delegation
 quizContainerNode.addEventListener("mouseover", (event) => {
-    console.log(event);
     if(event.target.className === "answer-options" && submitButton.dataset.gameMode === "game" && event.target.dataset.selected != "true"){
         event.target.setAttribute("style", "box-shadow: inset 0px 0px 4px 0px rgb(76 12 89)");
     }
@@ -29,7 +28,6 @@ quizContainerNode.addEventListener("mouseover", (event) => {
 // Event listener to clear box-shadow.  When font-style is set to none, it still seems to clear out my event listener without
 // explicitly changing the box-shadow.  Oddly if I remove this mouseout event, formatting stays when I mouse out.
 quizContainerNode.addEventListener("mouseout", (event) => {
-    console.log(event.target.dataset.selected);
     if(event.target.className === "answer-options" && event.target.dataset.selected != "true"){
         event.target.setAttribute("style", "font-style: none;");
     }
@@ -39,8 +37,6 @@ quizContainerNode.addEventListener("mouseout", (event) => {
 // If another box is selected, the listener loops over the array of answers and reset their formatting and selected data-attr before 
 // assigning the new value and formatting.
 quizContainerNode.addEventListener("click", (event) => {
-    console.log(event.target);
-    
     if(event.target.className === "answer-options"){
         if(event.target.style.fontWeight != "bold"){
             for(let i = 0; i < answerNodes.length; i++){
@@ -219,10 +215,6 @@ function popUpStatus(message) {
             
 function startQuiz(){
     welcomeMessageNode.setAttribute("style", "display: none");
-    // randomQuestion();
-    
-    console.log(quizDeck);
-    console.log("The deck has been loaded");
 }
 
 function drawCard(deck){
@@ -254,7 +246,16 @@ function grader(indexOfLastQuestion) {
     }
     deckCounter++;
     answerArray.push(compareArray);
-    console.log(answerArray);
+}
+
+function finishGame(){
+    //Calculate and display stats
+
+    //Reinitialize all values
+    quizDeck = [];
+    playerDeck = [];
+    deckCounter = 0;
+    answerArray = [];
 }
 
 // Event listener for the submit button to update the start button for the quiz
@@ -269,14 +270,14 @@ submitButton.addEventListener("click", (event) => {
         buildDeck(addEmUp());
         startQuiz();
         drawCard(quizDeck);
-    } else if (deckCounter < playerDeck.length -1){
+    } else if (deckCounter < playerDeck.length - 1){
         grader(deckCounter);                        //check grades and increment deck counter;
         drawCard(quizDeck);
     } else {
         grader(deckCounter);
+        finishGame();
         alert("thanks for playing!");
     }
-    
 });
 
 
