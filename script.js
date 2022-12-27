@@ -1,4 +1,5 @@
 // Latching onto our HTML friends
+// ID elements
 let questionSelectNode = document.getElementById("question-select");          //Welcome message window
 let quizContainerNode = document.getElementById("quiz-container");         //Main quiz container and window
 let quizQuestionNode = document.getElementById("quiz-question-text");       //Quiz Question where most of the content populates
@@ -7,12 +8,14 @@ let prevButton = document.getElementById("prev-button");           //Submit butt
 let submitButton = document.getElementById("submit-button");           //Submit button that displays inside of the quiz question node when called (display none/block)
 let quizHeaderStatusNode = document.getElementById("quiz-header-status");   //Pop up in the quiz window that will display various status messages
 
+// Class elements
 let colorMenuItemNodes = document.getElementsByClassName("color-menu-items");       //Divs that hold the check boxes and bubbles for color switching
 let colorCheckboxNodes = document.getElementsByClassName("colorCheckbox");               //Color checkboxes for users to choose the text color;
 let rangeNodes = document.getElementsByClassName("ranges");                   //Range sliders in quiz intro for selecting number of questions
 let answerNodes = document.getElementsByClassName("answer-options");
 let sumNode = document.getElementById("sumNode");                                   //Sum of questions user will receive
 
+// Initialize global vars
 let quizDeck = [];
 let playerDeck = [];
 let deckCounter = 0;
@@ -62,26 +65,28 @@ quizContainerNode.addEventListener("click", (event) => {
     
 });
 
+// Event listener to update the text field beneath the slider, the sum div, and call the addMeUp() function to
+// update the value attr of <input> in real-time
 questionSelectNode.addEventListener("input", (event) => {
     
     if(event.target.className == "ranges"){
         event.target.nextSibling.innerText = event.target.value;
         event.target.setAttribute("value", event.target.value);
         sumNode.innerText = addEmUp();
-
     }
 })
 
-// Add event listeners to all the checkboxes
+// Add event listeners to all the color menu checkboxes, details inside
 for(let i = 0; i < colorMenuItemNodes.length; i++){
     
+    // Each styled oval, color checkbox
     colorMenuItemNodes[i].addEventListener("click", (event) => {
         let checkboxChild;
         let bubbleChild;
         
         // Setting checkbox and bubble values based on where user clicks
-        // Initial bug found clicking on edge of box did not activate scritps because node assignments
-        // were misaligned
+        // **Initial bug found clicking on edge of box did not activate scritps because node assignments
+        // were misaligned**
         if(event.target.nodeName === "LI"){
             checkboxChild = event.target.firstChild;
             bubbleChild = event.target.lastChild;
@@ -107,8 +112,8 @@ for(let i = 0; i < colorMenuItemNodes.length; i++){
 
 }
 
-// Function to get all values from the ranges on HTML, add them up, and output them to the screen
-// in real-time
+// Function to get all values from the ranges on HTML, add them up,
+// and output them to the screen in real-time
 function addEmUp() {
     let sum = 0;
     for(let i = 0; i < 4; i++){
@@ -117,69 +122,29 @@ function addEmUp() {
     return sum;
 }
 
-
-
-//Randomizing all decks and adding to final deck
-//replace with function to take selection from user
-function randomizer(){
-    randomizeDeck(htmlQuestions, randomNumber(7));
-    randomizeDeck(cssQuestions, randomNumber(7));
-    randomizeDeck(genQuestions, randomNumber(7));
-    randomizeDeck(jsQuestions, randomNumber(7));
-}
-
 // Recursively randomize the deck passed in arguments and shuffle it as many times as shuffles argument;
 // Randomizers decide which ends to pull data off of arrays and how to place them (front vs. back)
 // Final output is set to quizDeck global variable
-function randomizeDeck(inputDeck, shuffles) {
-    let flag = shuffles;
-    let deck = inputDeck;
-    let randomizedDeck = [];
-    let placementRandomizer, pullRandomizer = 0;
-    
-    if(flag != 0){
-        for(let i = 0; i < 20; i++){
-            placementRandomizer = randomNumber(2);
-            pullRandomizer = randomNumber(2);
-            
-            if(placementRandomizer === 0 && pullRandomizer === 0){
-                randomizedDeck.push(deck.pop());
-            } else if(placementRandomizer === 0 && pullRandomizer === 1){
-                randomizedDeck.unshift(deck.pop());
-            } else if(placementRandomizer === 1 && pullRandomizer === 0){
-                randomizedDeck.push(deck.shift());
-            } else if(placementRandomizer === 1 && pullRandomizer === 1){
-                {randomizedDeck.unshift(deck.shift())}
-            }
-        }
-    deck = randomizedDeck;
-    randomizeDeck(deck, flag-1);
-        return;
-    }
-    for(let i = 0; i < deck.length; i++){
-        quizDeck.push(deck[i]);
-    }
-}
+function randomizeDecks(htmlCards, cssCards, jsCards, genCards) {
+    let quizDeckIndex = 0;
+    let jumbledDeck = [];
 
-// Function to build the final deck once the user has submitted their desired number of questions
-function buildDeck(sum) {
-    let numOfQuestions = sum;
-    let placementRandomizer, pullRandomizer = 0;
-    while(numOfQuestions > 0){
-        placementRandomizer = randomNumber(2);
-        pullRandomizer = randomNumber(2);
-        
-        if(placementRandomizer === 0 && pullRandomizer === 0){
-            playerDeck.push(quizDeck.pop());
-        } else if(placementRandomizer === 0 && pullRandomizer === 1){
-            playerDeck.unshift(quizDeck.pop());
-        } else if(placementRandomizer === 1 && pullRandomizer === 0){
-            playerDeck.push(quizDeck.shift());
-        } else if(placementRandomizer === 1 && pullRandomizer === 1){
-            playerDeck.unshift(quizDeck.shift())
-        }
-        numOfQuestions--;
+    for(let i = 0; i < htmlCards; i++){
+        playerDeck[quizDeckIndex] = htmlQuestions.splice(Math.floor(Math.random() * htmlQuestions.length), 1)[0];
+        quizDeckIndex++;
     }
+    for(let i = 0; i < cssCards; i++){
+        playerDeck[quizDeckIndex] = cssQuestions.splice(Math.floor(Math.random() * cssQuestions.length), 1)[0];
+        quizDeckIndex++;
+    }
+    for(let i = 0; i < jsCards; i++){
+        playerDeck[quizDeckIndex] = jsQuestions.splice(Math.floor(Math.random() * jsQuestions.length), 1)[0];
+        quizDeckIndex++;
+    }
+    for(let i = 0; i < genCards; i++){
+        playerDeck[quizDeckIndex] = genQuestions.splice(Math.floor(Math.random() * genQuestions.length), 1)[0];
+        quizDeckIndex++;
+    } 
 
 }
 
@@ -332,12 +297,9 @@ function finishGame(){
 submitButton.addEventListener("click", (event) => {
     event.preventDefault;
     if(submitButton.innerText === "Start!"){
-        randomizer();
-        console.log(rangeNodes[0]);
-        console.log(rangeNodes[1]);
-        console.log(rangeNodes[2]);
-        console.log(rangeNodes[3]);
-        buildDeck(addEmUp());
+        // randomizer(rangeNodes[0].value, rangeNodes[1].value, rangeNodes[2].value, rangeNodes[3].value);
+        // buildDeck(rangeNodes[0].value, rangeNodes[1].value, rangeNodes[2].value, rangeNodes[3].value);
+        randomizeDecks(rangeNodes[0].value, rangeNodes[1].value, rangeNodes[2].value, rangeNodes[3].value);
         startQuiz();
         pickCard(playerDeck, "next");
     } else if (deckCounter < playerDeck.length){
