@@ -122,30 +122,49 @@ function addEmUp() {
     return sum;
 }
 
-// Recursively randomize the deck passed in arguments and shuffle it as many times as shuffles argument;
-// Randomizers decide which ends to pull data off of arrays and how to place them (front vs. back)
-// Final output is set to quizDeck global variable
+// Passed arguments for how many cards of each deck the user selected
+// Randomly chooses that many of cards from the deck and stages them
+// Randomizes the final array into playerDeck by shift(), pop(), or splice()
 function randomizeDecks(htmlCards, cssCards, jsCards, genCards) {
     let quizDeckIndex = 0;
-    let jumbledDeck = [];
+    let stageDeck = [];
 
     for(let i = 0; i < htmlCards; i++){
-        playerDeck[quizDeckIndex] = htmlQuestions.splice(Math.floor(Math.random() * htmlQuestions.length), 1)[0];
+        stageDeck[quizDeckIndex] = htmlQuestions.splice(Math.floor(Math.random() * htmlQuestions.length), 1)[0];
         quizDeckIndex++;
     }
-    for(let i = 0; i < cssCards; i++){
-        playerDeck[quizDeckIndex] = cssQuestions.splice(Math.floor(Math.random() * cssQuestions.length), 1)[0];
+    for(let i = 0; i < cssCards; i++){ 
+        stageDeck[quizDeckIndex] = cssQuestions.splice(Math.floor(Math.random() * cssQuestions.length), 1)[0];
         quizDeckIndex++;
     }
     for(let i = 0; i < jsCards; i++){
-        playerDeck[quizDeckIndex] = jsQuestions.splice(Math.floor(Math.random() * jsQuestions.length), 1)[0];
+        stageDeck[quizDeckIndex] = jsQuestions.splice(Math.floor(Math.random() * jsQuestions.length), 1)[0];
         quizDeckIndex++;
     }
     for(let i = 0; i < genCards; i++){
-        playerDeck[quizDeckIndex] = genQuestions.splice(Math.floor(Math.random() * genQuestions.length), 1)[0];
+        stageDeck[quizDeckIndex] = genQuestions.splice(Math.floor(Math.random() * genQuestions.length), 1)[0];
         quizDeckIndex++;
     } 
 
+   let initialStringLength = stageDeck.length;
+
+        for(let i = 0; i < initialStringLength; i++){
+            switch (Math.floor(Math.random() * 3)){
+            
+                case (0):
+                    playerDeck[i] = stageDeck.shift();
+                    break;
+                case (1):
+                    playerDeck[i] = stageDeck.pop();
+                    break;
+                case (2):
+                    playerDeck[i] = stageDeck.splice(Math.floor(Math.random() * stageDeck.length) , 1)[0];
+                    break;
+                default:
+                    alert('error');
+                }
+        console.log(playerDeck[i]);
+        }
 }
 
 function pickCard(deck, direction){
@@ -269,9 +288,9 @@ function startQuiz(){
 function finishGame(){
     let unanswered = 0, incorrect = 0, correct = 0;
     
-    //Calculate and display stats
+    //Calculate and display stats  **Need to run edge cases on this**
     for(let i = 0; i < answerArray.length; i++){
-        if(answerArray[i][1] == ""){
+        if(answerArray[i][1] === ""){
             console.log("unanswered");
             unanswered++;
         } else if (answerArray[i][1] != answerArray[i][2]){
@@ -367,7 +386,7 @@ let htmlQuestion1 = new quizQuestion(
         "Hello There, M'Lady!",
         "Hyped up Marker Language"
     ],
-    2,
+    1,
     "Browsers can interpret marked up language",
     "https://www.w3schools.com/html/html_intro.asp",
     "HTML"
@@ -382,7 +401,7 @@ let htmlQuestion2 = new quizQuestion(
         "html, css, javascript",
         "src, alt, value"
     ],
-    2,
+    1,
     "These tags help screen readers understand the flow of your document",
     "https://www.w3schools.com/html/html5_semantic_elements.asp",
     "HTML"
@@ -397,7 +416,7 @@ let htmlQuestion3 = new quizQuestion(
         "find 'script.js'",
         "<script src='./script.js'></script>"
     ],
-    4,
+    3,
     "We link our js script in a separate section of the HTML",
     "https://www.w3schools.com/tags/att_script_src.asp",
     "HTML"
@@ -412,7 +431,7 @@ let htmlQuestion4 = new quizQuestion(
         "<return>",
         "\\r"
     ],
-    1,
+    0,
     "'Gimme a break!'",
     "https://www.w3schools.com/tags/tag_br.asp",
     "HTML"
@@ -427,7 +446,7 @@ let htmlQuestion5 = new quizQuestion(
         "data-attribute ='property'",
         "dataset.property"
     ],
-    3,
+    2,
     "A prefix lets the browser know this is a data attribute",
     "https://www.w3schools.com/tags/att_data-.asp",
     "HTML"
@@ -442,7 +461,7 @@ let htmlQuestion6 = new quizQuestion(
         "autofill-html, start",
         "begin, ??"
     ],
-    2,
+    1,
     "Here is your hint",
     "N/A",
     "HTML"
@@ -457,7 +476,7 @@ let htmlQuestion7 = new quizQuestion(
         "<ulist>",
         "<ul>"
     ],
-    4,
+    3,
     "It's just two letters",
     "https://www.w3schools.com/tags/tag_ul.asp",
     "HTML"
@@ -471,21 +490,21 @@ let htmlQuestion8 = new quizQuestion(
         "DevTools",
         "WebView"
     ],
-    3,
+    2,
     "Tricks of the 'trade'",
     "https://developer.mozilla.org/en-US/docs/Learn/Common_questions/What_are_browser_developer_tools",
     "HTML"
 )
 let htmlQuestion9 = new quizQuestion(
     "Question 9",
-    "We can write comments in HTMl using the following symbols",
+    "We can write comments in HTML using the following symbols",
     [
         "//",
         "<!--    -->",
         "/*    */",
         "Comment: "
     ],
-    2,
+    1,
     "All HTML comments are enthusiastic",
     "https://www.w3schools.com/html/html_comments.asp",
     "HTML"
@@ -499,79 +518,79 @@ let htmlQuestion10 = new quizQuestion(
         "source, redirect, image",
         "ref, snapto, tooltip"
     ],
-    1,
+    0,
     "One of these attributes allows us to control whether the link opens in the same window or a new tab",
     "https://www.w3schools.com/html/html_links.asp",
     "HTML"
 )
 let htmlQuestion11 = new quizQuestion(
     "Question 11",
-    "I'm question #11, practice typing with me.",
+    "An easy way to link HTML elements to CSS and javascript is by referencing attributes, such as:",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "#id or .class",
+        "-min or -max",
+        "<header>, <main>, and <footer>",
+        "!DOCTYPE"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    0,
+    "One is unique, one is not",
+    "https://www.w3schools.com/tags/ref_attributes.asp",
     "HTML"
 )
 let htmlQuestion12 = new quizQuestion(
     "Question 12",
-    "I'm question #12, practice typing with me.",
+    "What does this emmet string output?\ndiv>ul>li.hello*3\n\nChoose the most correct answer",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "3 lists, 1 unordered list, and a div",
+        "1 div, an ordered list, and 3 list items inside",
+        "1 div, an unordered list, and 3 list items inside",
+        "1 div, an unordered list, and 3 list items with the class 'hello' inside"
     ],
     3,
-    "Here is your hint",
-    "Google Link",
+    "Emmet uses similar annotation to CSS selectors",
+    "https://docs.emmet.io/cheat-sheet/",
     "HTML"
 )
 let htmlQuestion13 = new quizQuestion(
     "Question 13",
-    "I'm question #13, practice typing with me.",
+    "What is the proper syntax for linking a cascading stylesheet",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "<style sheet='./style.css'>",
+        "<link rel='stylesheet' href='./style.css'>",
+        "<meta stylesheet='./style.css'>",
+        "<link rel='./style.css'>"
     ],
-    3,
+    1,
     "Here is your hint",
-    "Google Link",
+    "https://www.w3schools.com/css/css_howto.asp",
     "HTML"
 )
 let htmlQuestion14 = new quizQuestion(
     "Question 14",
-    "I'm question #14, practice typing with me.",
+    "This semantic element allows for users to enter multiple lines of text",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "<text></text>",
+        "<span></span>",
+        "<p></p>",
+        "<textarea><textarea>"
     ],
     3,
-    "Here is your hint",
-    "Google Link",
+    "This can take up a large area",
+    "https://www.w3schools.com/tags/tag_textarea.asp",
     "HTML"
 )
 let htmlQuestion15 = new quizQuestion(
     "Question 15",
-    "I'm question #15, practice typing with me.",
+    "What element allows users to select items from a dropdown menu",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "<input type='dropdown' />",
+        "<label>, <select>, and <option> together",
+        "<list></list>",
+        "All of the above"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    1,
+    "We have to give it a name, dropdown, and items",
+    "https://www.w3schools.com/tags/tag_select.asp",
     "HTML"
 )
 let htmlQuestion16 = new quizQuestion(
@@ -648,204 +667,204 @@ let htmlQuestion20 = new quizQuestion(
 // JavaScript Questions
 let jsQuestion1 = new quizQuestion(
     "Question 1",
-    "I'm question #1, practice typing with me.",
+    "This type of declaration implies the value of the variable does NOT change.",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "var ratio;",
+        "let ratio = 0;",
+        "const ratio = 2.5;",
+        "if ratio == 2.5 !change"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    2,
+    "This is a constant reminder...",
+    "https://www.w3schools.com/js/js_const.asp",
     "JavaScript"
 )
 
 let jsQuestion2 = new quizQuestion(
     "Question 2",
-    "I'm question #2, practice typing with me.",
+    "What does the following code produce?\n\nlet number = 0;\nfor(let i = 0; i < 10; i++) {\n\tnumber += i\n}\nconsole.log(number);",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "0123456789",
+        "0",
+        "45",
+        "iiiiiiiiii"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    2,
+    "for repeats the code inside until the counter == 10",
+    "https://www.w3schools.com/js/js_loop_for.asp",
     "JavaScript"
 )
 
 let jsQuestion3 = new quizQuestion(
     "Question 3",
-    "I'm question #3, practice typing with me.",
+    "This type of conditional does one thing if true, or another thing if something else is true",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "if/else",
+        "if/else if",
+        "while",
+        "for"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    1,
+    "Specific conditions must be met",
+    "https://www.w3schools.com/js/js_if_else.asp",
     "JavaScript"
 )
 
 let jsQuestion4 = new quizQuestion(
     "Question 4",
-    "I'm question #4, practice typing with me.",
+    "This type of conditional will continue to run whilst its condition is false",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "if/else",
+        "if/else if",
+        "while",
+        "for"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    2,
+    "whilst is your hint :)",
+    "https://www.w3schools.com/js/js_loop_while.asp",
     "JavaScript"
 )
 
 let jsQuestion5 = new quizQuestion(
     "Question 5",
-    "I'm question #5, practice typing with me.",
+    "This condition takes in 3 arguments and will iterate until its counter meets a specified condition",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "if/else",
+        "if/else if",
+        "while",
+        "for"
     ],
     3,
-    "Here is your hint",
-    "Google Link",
+    "(let i = 0; i < ourCounter; i++)",
+    "https://www.w3schools.com/js/js_loop_for.asp",
     "JavaScript"
 )
 
 let jsQuestion6 = new quizQuestion(
     "Question 6",
-    "I'm question #6, practice typing with me.",
+    "When declaring the following function:\n\n function(p1, p2, p3){\n\n}\nWhat are p1, p2, and p3 called?",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "Arguments",
+        "Parenthetical Documentation",
+        "Parameters",
+        "Parts"
     ],
-    3,
+    2,
     "Here is your hint",
-    "Google Link",
+    "https://www.w3schools.com/js/js_function_parameters.asp",
     "JavaScript"
 )
 
 let jsQuestion7 = new quizQuestion(
     "Question 7",
-    "I'm question #7, practice typing with me.",
+    "Each of these can be used to remove elements from an array.",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "slice(), dice(), front(), back()",
+        "shift(), pop(), splice(), delete",
+        "unshift(), push(), slice()",
+        "return, break, continue"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    1,
+    "There are many different ways to do this!",
+    "https://www.w3schools.com/js/js_array_methods.asp",
     "JavaScript"
 )
 let jsQuestion8 = new quizQuestion(
     "Question 8",
-    "I'm question #8, practice typing with me.",
+    "The following code can be used to find a random number between 0 and max",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "Math.random(Math.floor() * max)",
+        "max(Math.floor(Math.random()))",
+        "Math.floor(Math.random() * max)",
+        "max(Math.random() * Math.floor())"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    2,
+    "We need to round down the product of 0-1 and max",
+    "https://www.w3schools.com/js/js_random.asp",
     "JavaScript"
 )
 let jsQuestion9 = new quizQuestion(
     "Question 9",
-    "I'm question #9, practice typing with me.",
+    "Which of the following values is NOT false",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "!true",
+        "NaN",
+        "0",
+        "'false'"
     ],
     3,
-    "Here is your hint",
-    "Google Link",
+    "Only empty strings are falsy",
+    "https://developer.mozilla.org/en-US/docs/Glossary/Falsy",
     "JavaScript"
 )
 let jsQuestion10 = new quizQuestion(
     "Question 10",
-    "I'm question #10, practice typing with me.",
+    "Each of these can be used to add elements to an array.",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "slice(), dice(), front(), back()",
+        "shift(), pop(), splice(), delete",
+        "unshift(), push(), join()",
+        "return, break, continue"
     ],
-    3,
+    2,
     "Here is your hint",
     "Google Link",
     "JavaScript"
 )
 let jsQuestion11 = new quizQuestion(
     "Question 11",
-    "I'm question #11, practice typing with me.",
+    "What does the following return?\n\nlet myString = 'abcdefgh';\nmyString.includes('cdef');",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "false",
+        "cdef",
+        "abgh",
+        "true"
     ],
-    3,
+    1,
     "Here is your hint",
-    "Google Link",
+    "https://www.w3schools.com/JSREF/jsref_includes.asp",
     "JavaScript"
 )
 let jsQuestion12 = new quizQuestion(
     "Question 12",
-    "I'm question #12, practice typing with me.",
+    "If myString = 'The Lone Rangers', how would we return the letter 's'?"
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "myString.indexOf(s)",
+        "myString.charAt(myString.length)",
+        "myString.charAt(myString.length - 1)",
+        "myString.charAt(last)"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    2,
+    "The string length != last index",
+    "https://www.w3schools.com/jsref/jsref_charat.asp",
     "JavaScript"
 )
 let jsQuestion13 = new quizQuestion(
     "Question 13",
-    "I'm question #13, practice typing with me.",
+    "The following events can be added as event listeners to HTML objects.",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "lookedat, lookback, lookforward",
+        "mouseenter, mouseleave, click",
+        "hover, focus, mousein",
+        "display, hide, animate"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    1,
+    "How do users mostly interact with webpages?",
+    "https://www.w3schools.com/jsref/met_element_addeventlistener.asp",
     "JavaScript"
 )
 let jsQuestion14 = new quizQuestion(
     "Question 14",
-    "I'm question #14, practice typing with me.",
+    "Variables can easily be added into strings by using backticks using template literals.  What is the proper syntax for doing so?",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "\`${ourVariable}\`",
+        "\`{$ourVariable}\`",
+        "\`$ourVariable\`",
+        "\`$ourVariable$\`"
     ],
     3,
-    "Here is your hint",
-    "Google Link",
+    "TIL what these are called (psst, look at the acronym TIL)",
+    "https://www.w3schools.com/js/js_string_templates.asp",
     "JavaScript"
 )
 let jsQuestion15 = new quizQuestion(
@@ -943,7 +962,7 @@ let cssQuestion1 = new quizQuestion(
         "After",
         "Axis"
     ],
-    1,
+    0,
     "This component helps control transparency of the color",
     "https://www.w3schools.com/cssref/func_rgba.php",
     "CSS"

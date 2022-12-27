@@ -343,7 +343,6 @@ header {
     flex-grow: 1;
     max-width: 50%;
     height: 50px;
-    border: 1px solid green;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -355,6 +354,8 @@ header {
     
 }
 
+
+/* CSS for text under sliders */
 #html + p {
     color: var(--html-yellow);
 
