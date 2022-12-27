@@ -9,7 +9,7 @@ let quizHeaderStatusNode = document.getElementById("quiz-header-status");   //Po
 
 let colorMenuItemNodes = document.getElementsByClassName("color-menu-items");       //Divs that hold the check boxes and bubbles for color switching
 let colorCheckboxNodes = document.getElementsByClassName("colorCheckbox");               //Color checkboxes for users to choose the text color;
-let rangeBoxes = document.getElementsByClassName("ranges");                   //Range sliders in quiz intro for selecting number of questions
+let rangeNodes = document.getElementsByClassName("ranges");                   //Range sliders in quiz intro for selecting number of questions
 let answerNodes = document.getElementsByClassName("answer-options");
 let sumNode = document.getElementById("sumNode");                                   //Sum of questions user will receive
 
@@ -17,6 +17,11 @@ let quizDeck = [];
 let playerDeck = [];
 let deckCounter = 0;
 let answerArray = [];
+
+// js to reset slider value to the default value of input
+for(let i = 0; i < rangeNodes.length; i++){
+    rangeNodes[i].value = rangeNodes[i].getAttribute("value");
+}
 
 // Event listeners to make answer options glow on mouseover with delegation
 quizContainerNode.addEventListener("mouseover", (event) => {
@@ -61,7 +66,9 @@ questionSelectNode.addEventListener("input", (event) => {
     
     if(event.target.className == "ranges"){
         event.target.nextSibling.innerText = event.target.value;
+        event.target.setAttribute("value", event.target.value);
         sumNode.innerText = addEmUp();
+
     }
 })
 
@@ -105,7 +112,7 @@ for(let i = 0; i < colorMenuItemNodes.length; i++){
 function addEmUp() {
     let sum = 0;
     for(let i = 0; i < 4; i++){
-        sum = sum + parseInt(rangeBoxes[i].value);
+        sum = sum + parseInt(rangeNodes[i].value);
     }
     return sum;
 }
@@ -326,6 +333,10 @@ submitButton.addEventListener("click", (event) => {
     event.preventDefault;
     if(submitButton.innerText === "Start!"){
         randomizer();
+        console.log(rangeNodes[0]);
+        console.log(rangeNodes[1]);
+        console.log(rangeNodes[2]);
+        console.log(rangeNodes[3]);
         buildDeck(addEmUp());
         startQuiz();
         pickCard(playerDeck, "next");
