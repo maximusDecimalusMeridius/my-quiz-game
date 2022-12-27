@@ -104,45 +104,21 @@ for(let i = 0; i < colorMenuItemNodes.length; i++){
 // in real-time
 function addEmUp() {
     let sum = 0;
-        for(let i = 0; i < 4; i++){
-            sum = sum + parseInt(rangeBoxes[i].value);
-        }
+    for(let i = 0; i < 4; i++){
+        sum = sum + parseInt(rangeBoxes[i].value);
+    }
     return sum;
 }
 
-// Typewriter function to display text like a typewriter
-function typeWriter(textToDisplay){
- 
-    // Set typing speed and initialize the content and counter
-    let typeSpeed = 25;
-    let typedContent = "";
-    let loopCounter = 0;
-    
-    // Using set interval to run as long as the loop counter is less than the length of our string
-    // based on the setting of variable typeSpeed
-    let typeLetters = setInterval(() => {
-        if(loopCounter < textToDisplay.length){
-            typedContent += textToDisplay.charAt(loopCounter);
-            quizQuestionNode.innerText = typedContent;
-            loopCounter++;
-        } else {
-            clearInterval(typeLetters);
-        }
-        }, typeSpeed)
-}
 
-// Function to calculate a random number
-function randomNumber(num){
-    return (Math.floor(Math.random() * num));
-}
 
 //Randomizing all decks and adding to final deck
 //replace with function to take selection from user
 function randomizer(){
     randomizeDeck(htmlQuestions, randomNumber(7));
-    randomizeDeck(jsQuestions, randomNumber(7));
     randomizeDeck(cssQuestions, randomNumber(7));
     randomizeDeck(genQuestions, randomNumber(7));
+    randomizeDeck(jsQuestions, randomNumber(7));
 }
 
 // Recursively randomize the deck passed in arguments and shuffle it as many times as shuffles argument;
@@ -150,7 +126,7 @@ function randomizer(){
 // Final output is set to quizDeck global variable
 function randomizeDeck(inputDeck, shuffles) {
     let flag = shuffles;
-    let deck = [...inputDeck];
+    let deck = inputDeck;
     let randomizedDeck = [];
     let placementRandomizer, pullRandomizer = 0;
     
@@ -169,7 +145,7 @@ function randomizeDeck(inputDeck, shuffles) {
                 {randomizedDeck.unshift(deck.shift())}
             }
         }
-    deck = [...randomizedDeck];
+    deck = randomizedDeck;
     randomizeDeck(deck, flag-1);
         return;
     }
@@ -200,8 +176,67 @@ function buildDeck(sum) {
 
 }
 
-// Function to randomize the deck passed in arguments and shuffles the random deck shuffles times
+function pickCard(deck, direction){
 
+    let currentQuestion;
+
+    function updateQuestion(){
+        quizQuestionTitleNode.innerText = `Question ${deckCounter + 1} / ${playerDeck.length}`;
+        typeWriter(currentQuestion.content);
+        answerNodes[0].innerText = currentQuestion.answers[0];
+        answerNodes[1].innerText = currentQuestion.answers[1];
+        answerNodes[2].innerText = currentQuestion.answers[2];
+        answerNodes[3].innerText = currentQuestion.answers[3];
+        popUpStatus(currentQuestion.language);
+        // if(answerArray[deckCounter])
+    
+    clearAnswers();
+    if(answerArray[deckCounter] != undefined) {
+        answerNodes[answerArray[deckCounter][1]].setAttribute("style", "font-weight: bold; background-color: var(--navy-blue); color: white;");
+        answerNodes[answerArray[deckCounter][1]].dataset.selected = "true";
+    }
+
+    }
+
+    if(direction === "next"){
+        if(deckCounter < deck.length){
+            currentQuestion = deck[deckCounter];
+            updateQuestion();
+            deckCounter++;
+        }
+    }
+
+    if(direction === "prev"){
+        deckCounter -= 2;
+        currentQuestion = deck[deckCounter];
+        updateQuestion();
+        deckCounter++;
+    }
+
+}
+
+function grader(indexOfGradedQuestion) {
+    let compareArray = [];
+    let somethingSelected = false;
+    
+    compareArray.push(`Question-${indexOfGradedQuestion + 1}`);           //Set compareArray[0] to Question title
+    for(let i = 0; i < 4; i++){
+        if(answerNodes[i].dataset.selected === "true"){
+            compareArray.push(i);                                   //this is the user selected value
+            somethingSelected = true;
+        }
+    }
+    if(somethingSelected === false){
+        compareArray.push("");                                      //push a blank space if no answers are selected
+    }
+    
+    compareArray.push(playerDeck[indexOfGradedQuestion].answerIndex);
+    answerArray[indexOfGradedQuestion] = compareArray;
+    console.log(answerArray);
+    clearAnswers();
+}
+
+// Pop up manager displays the question.language for the question displayed
 function popUpStatus(message) {
 
     quizHeaderStatusNode.innerText = message;
@@ -216,7 +251,42 @@ function popUpStatus(message) {
     }, 2000);
 
 }
-            
+
+// Utility typewriter function to display text like a typewriter
+function typeWriter(textToDisplay){
+ 
+    // Set typing speed and initialize the content and counter
+    let typeSpeed = 25;
+    let typedContent = "";
+    let loopCounter = 0;
+    
+    // Using set interval to run as long as the loop counter is less than the length of our string
+    // based on the setting of variable typeSpeed
+    let typeLetters = setInterval(() => {
+        if(loopCounter < textToDisplay.length){
+            typedContent += textToDisplay.charAt(loopCounter);
+            quizQuestionNode.innerText = typedContent;
+            loopCounter++;
+        } else {
+            clearInterval(typeLetters);
+        }
+        }, typeSpeed)
+}
+
+// Utility function to calculate a random number
+function randomNumber(num){
+    return (Math.floor(Math.random() * num));
+}
+
+// Utility function to clear all answer
+function clearAnswers() {
+    for(let i = 0; i < 4; i++){
+        answerNodes[i].dataset.selected = "false";
+        answerNodes[i].setAttribute("style", "font-weight: none; background-color: white; color: black;");
+    }
+}
+
+// Hides question Selection, shows previous button and updates status of submit button
 function startQuiz(){
     questionSelectNode.setAttribute("style", "display: none");
     prevButton.setAttribute("style", "display: block;")
@@ -224,62 +294,24 @@ function startQuiz(){
     submitButton.innerText = "Next";
 }
 
-function pickCard(deck, direction){
-    let currentQuestion;
-
-    function updateQuestion(){
-        quizQuestionTitleNode.innerText = `Question ${deckCounter + 1} / ${playerDeck.length}`;
-        typeWriter(currentQuestion.content);
-        answerNodes[0].innerText = currentQuestion.answers[0];
-        answerNodes[1].innerText = currentQuestion.answers[1];
-        answerNodes[2].innerText = currentQuestion.answers[2];
-        answerNodes[3].innerText = currentQuestion.answers[3];  
-        popUpStatus(currentQuestion.language);
-        console.log(playerDeck[deckCounter]);
-        //Start question timer
-    }
-
-    if(direction === "next"){
-        if(deckCounter < deck.length){
-            currentQuestion = deck[deckCounter];
-            updateQuestion();
-            deckCounter++;
-        }
-    }
-
-    
-    if(direction === "prev" && deckCounter > 1){
-        deckCounter -= 2;
-        currentQuestion = deck[deckCounter];
-        updateQuestion(); 
-        deckCounter++;
-    }
-    
-}
-
-function grader(indexOfLastQuestion) {
-    let compareArray = [];
-    compareArray.push(`Question-${indexOfLastQuestion}`);
-
-    for(let i = 0; i < 4; i++){
-        if(answerNodes[i].dataset.selected === "true"){
-            compareArray.push(i);           //this is the user selected value
-            compareArray.push(quizDeck[i].answerIndex);             //this is the correct answer
-        }
-        answerNodes[i].dataset.selected = "false";
-        answerNodes[i].setAttribute("style", "font-weight: none; background-color: white; color: black;");
-    }
-    
-    if(answerArray > 0 && answerArray[i][0] != `Question-${indexOfLastQuestion}`){
-        console.log("You clicked prev!");
-    }
-
-    answerArray.push(compareArray);
-    console.log(answerArray);
-}
-
 function finishGame(){
+    let unanswered = 0, incorrect = 0, correct = 0;
+    
     //Calculate and display stats
+    for(let i = 0; i < answerArray.length; i++){
+        if(answerArray[i][1] == ""){
+            console.log("unanswered");
+            unanswered++;
+        } else if (answerArray[i][1] != answerArray[i][2]){
+            console.log("not equal");
+            incorrect+=1;
+        } else if (answerArray[i][1] == answerArray[i][2]) {
+            console.log("equal");
+            correct+=1;
+        }
+    }
+
+    console.log("Correct: " + correct + "\nIncorrect: " + incorrect + "\nUnanswered: " + unanswered);
 
     //Reinitialize all values
     quizDeck = [];
@@ -297,11 +329,11 @@ submitButton.addEventListener("click", (event) => {
         buildDeck(addEmUp());
         startQuiz();
         pickCard(playerDeck, "next");
-    } else if (deckCounter < playerDeck.length - 1){
-        grader(deckCounter);                        //check grades and increment deck counter;
+    } else if (deckCounter < playerDeck.length){
+        grader(deckCounter - 1);                        //check grades and increment deck counter;
         pickCard(playerDeck, "next");
     } else {
-        grader(deckCounter);
+        grader(deckCounter - 1);
         finishGame();
         alert("thanks for playing!");
     }
@@ -309,7 +341,9 @@ submitButton.addEventListener("click", (event) => {
 
 prevButton.addEventListener("click", (event) => {
     event.preventDefault;
-    pickCard(playerDeck, "prev");
+    if(deckCounter > 1){
+        pickCard(playerDeck, "prev");
+    }
 })
 
 
@@ -340,161 +374,161 @@ prevButton.addEventListener("click", (event) => {
 
 // Quiz question class
 class quizQuestion {
-    constructor(title, content, answers, answerIndex, hint, googleLink, language){
+    constructor(title, content, answers, answerIndex, hint, w3link, language){
         this.title = title;
         this.content = content;
         this.answers = answers;
         this.answerIndex = answerIndex;
         this.hint = hint;
-        this.googleLink = googleLink;
+        this.w3link = w3link;
         this.language = language;
     }
 }
 
 let htmlQuestion1 = new quizQuestion(
     "Question 1",
-    "I'm question #1, practice typing with me.",
+    "HTML stands for:",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "Hyper Text Made-up Language",
+        "Hyper Text Markup Language",
+        "Hello There, M'Lady!",
+        "Hyped up Marker Language"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    2,
+    "Browsers can interpret marked up language",
+    "https://www.w3schools.com/html/html_intro.asp",
     "HTML"
 )
 
 let htmlQuestion2 = new quizQuestion(
     "Question 2",
-    "I'm question #2, practice typing with me.",
+    "Which of the following are semantic tags:",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "divider, paragraph, span",
+        "header, section, aside",
+        "html, css, javascript",
+        "src, alt, value"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    2,
+    "These tags help screen readers understand the flow of your document",
+    "https://www.w3schools.com/html/html5_semantic_elements.asp",
     "HTML"
 )
 
 let htmlQuestion3 = new quizQuestion(
     "Question 3",
-    "I'm question #3, practice typing with me.",
+    "This is the proper syntax for linking a script.js file",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "!link script.js",
+        "<link type='script.js' src='./script.js'>",
+        "find 'script.js'",
+        "<script src='./script.js'></script>"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    4,
+    "We link our js script in a separate section of the HTML",
+    "https://www.w3schools.com/tags/att_script_src.asp",
     "HTML"
 )
 
 let htmlQuestion4 = new quizQuestion(
     "Question 4",
-    "I'm question #2, practice typing with me.",
+    "Which of the following can help us make a new line in HTML",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "<br>",
+        "<new>",
+        "<return>",
+        "\\r"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    1,
+    "'Gimme a break!'",
+    "https://www.w3schools.com/tags/tag_br.asp",
     "HTML"
 )
 
 let htmlQuestion5 = new quizQuestion(
     "Question 5",
-    "I'm question #5, practice typing with me.",
+    "Any element can be given a data attribute by adding which of the following:",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "data: attribute",
+        "[data] = [attribute]",
+        "data-attribute ='property'",
+        "dataset.property"
     ],
     3,
-    "Here is your hint",
-    "Google Link",
+    "A prefix lets the browser know this is a data attribute",
+    "https://www.w3schools.com/tags/att_data-.asp",
     "HTML"
 )
 
 let htmlQuestion6 = new quizQuestion(
     "Question 6",
-    "I'm question #6, practice typing with me.",
+    "In VSCode, these typed shortcuts can be used to auto-fill your HTML template",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "?, give-me-html",
+        "html, !",
+        "autofill-html, start",
+        "begin, ??"
     ],
-    3,
+    2,
     "Here is your hint",
-    "Google Link",
+    "N/A",
     "HTML"
 )
 
 let htmlQuestion7 = new quizQuestion(
     "Question 7",
-    "I'm question #7, practice typing with me.",
+    "What is the correct tag for an unordered list?",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "<uol>",
+        "<ol>",
+        "<ulist>",
+        "<ul>"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    4,
+    "It's just two letters",
+    "https://www.w3schools.com/tags/tag_ul.asp",
     "HTML"
 )
 let htmlQuestion8 = new quizQuestion(
     "Question 8",
-    "I'm question #8, practice typing with me.",
+    "You can access this in a browser to see the website's code",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "Bookmarks",
+        "See more...",
+        "DevTools",
+        "WebView"
     ],
     3,
-    "Here is your hint",
-    "Google Link",
+    "Tricks of the 'trade'",
+    "https://developer.mozilla.org/en-US/docs/Learn/Common_questions/What_are_browser_developer_tools",
     "HTML"
 )
 let htmlQuestion9 = new quizQuestion(
     "Question 9",
-    "I'm question #9, practice typing with me.",
+    "We can write comments in HTMl using the following symbols",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "//",
+        "<!--    -->",
+        "/*    */",
+        "Comment: "
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    2,
+    "All HTML comments are enthusiastic",
+    "https://www.w3schools.com/html/html_comments.asp",
     "HTML"
 )
 let htmlQuestion10 = new quizQuestion(
     "Question 10",
-    "I'm question #10, practice typing with me.",
+    "Which attributes can we add to links?",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "href, title, target",
+        "src, alt, href",
+        "source, redirect, image",
+        "ref, snapto, tooltip"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    1,
+    "One of these attributes allows us to control whether the link opens in the same window or a new tab",
+    "https://www.w3schools.com/html/html_links.asp",
     "HTML"
 )
 let htmlQuestion11 = new quizQuestion(
@@ -686,7 +720,7 @@ let jsQuestion3 = new quizQuestion(
 
 let jsQuestion4 = new quizQuestion(
     "Question 4",
-    "I'm question #2, practice typing with me.",
+    "I'm question #4, practice typing with me.",
     [
         "Answer 1",
         "Answer 2",
@@ -929,16 +963,16 @@ let jsQuestion20 = new quizQuestion(
 // CSS Questions
 let cssQuestion1 = new quizQuestion(
     "Question 1",
-    "I'm question #1, practice typing with me.",
+    "What does the 'a' in rgba(255, 255, 255, 1) stand for?",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "Alpha",
+        "Anti-saturation",
+        "After",
+        "Axis"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    1,
+    "This component helps control transparency of the color",
+    "https://www.w3schools.com/cssref/func_rgba.php",
     "CSS"
 )
 
