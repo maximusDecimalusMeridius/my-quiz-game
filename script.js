@@ -1,5 +1,5 @@
 // Latching onto our HTML friends
-let welcomeMessageNode = document.getElementById("welcome-message");          //Welcome message window
+let questionSelectNode = document.getElementById("question-select");          //Welcome message window
 let quizContainerNode = document.getElementById("quiz-container");         //Main quiz container and window
 let quizQuestionNode = document.getElementById("quiz-question-text");       //Quiz Question where most of the content populates
 let quizQuestionTitleNode = document.getElementById("quiz-header-title");   //Welcome title and "Question" title
@@ -37,15 +37,19 @@ quizContainerNode.addEventListener("mouseout", (event) => {
 // If another box is selected, the listener loops over the array of answers and reset their formatting and selected data-attr before 
 // assigning the new value and formatting.
 quizContainerNode.addEventListener("click", (event) => {
-    if(event.target.className === "answer-options"){
+    if(event.target.className === "answer-options" && submitButton.dataset.gameMode === "game"){
         if(event.target.style.fontWeight != "bold"){
+            
             for(let i = 0; i < answerNodes.length; i++){
                 answerNodes[i].setAttribute("style", "font-weight: none; background-color: white; color: black;");
                 answerNodes[i].dataset.selected = "false";
             }
-            event.target.setAttribute("style", "font-weight: bold; background-color: rgb(76 12 89); color: white;");
+            
+            event.target.setAttribute("style", "font-weight: bold; background-color: var(--navy-blue); color: white;");
             event.target.dataset.selected = "true";
-        } else {
+        } 
+        
+        else {
             event.target.setAttribute("style", "font-weight: none; background-color: white; color: black;");
             event.target.dataset.selected = "false";
         }
@@ -53,23 +57,13 @@ quizContainerNode.addEventListener("click", (event) => {
     
 });
 
-welcomeMessageNode.addEventListener("input", (event) => {
+questionSelectNode.addEventListener("input", (event) => {
     
     if(event.target.className == "ranges"){
         event.target.nextSibling.innerText = event.target.value;
         sumNode.innerText = addEmUp();
     }
 })
-
-// Function to get all values from the ranges on HTML, add them up, and output them to the screen
-// in real-time
-function addEmUp() {
-    let sum = 0;
-        for(let i = 0; i < 4; i++){
-            sum = sum + parseInt(rangeBoxes[i].value);
-        }
-    return sum;
-}
 
 // Add event listeners to all the checkboxes
 for(let i = 0; i < colorMenuItemNodes.length; i++){
@@ -106,6 +100,16 @@ for(let i = 0; i < colorMenuItemNodes.length; i++){
 
 }
 
+// Function to get all values from the ranges on HTML, add them up, and output them to the screen
+// in real-time
+function addEmUp() {
+    let sum = 0;
+        for(let i = 0; i < 4; i++){
+            sum = sum + parseInt(rangeBoxes[i].value);
+        }
+    return sum;
+}
+
 // Typewriter function to display text like a typewriter
 function typeWriter(textToDisplay){
  
@@ -125,6 +129,20 @@ function typeWriter(textToDisplay){
             clearInterval(typeLetters);
         }
         }, typeSpeed)
+}
+
+// Function to calculate a random number
+function randomNumber(num){
+    return (Math.floor(Math.random() * num));
+}
+
+//Randomizing all decks and adding to final deck
+//replace with function to take selection from user
+function randomizer(){
+    randomizeDeck(htmlQuestions, randomNumber(7));
+    randomizeDeck(jsQuestions, randomNumber(7));
+    randomizeDeck(cssQuestions, randomNumber(7));
+    randomizeDeck(genQuestions, randomNumber(7));
 }
 
 // Recursively randomize the deck passed in arguments and shuffle it as many times as shuffles argument;
@@ -160,11 +178,6 @@ function randomizeDeck(inputDeck, shuffles) {
     }
 }
 
-// Function to calculate a random number
-function randomNumber(num){
-    return (Math.floor(Math.random() * num));
-}
-
 // Function to build the final deck once the user has submitted their desired number of questions
 function buildDeck(sum) {
     let numOfQuestions = sum;
@@ -187,15 +200,6 @@ function buildDeck(sum) {
 
 }
 
-//Randomizing all decks and adding to final deck
-//replace with function to take selection from user
-function randomizer(){
-    randomizeDeck(htmlQuestions, randomNumber(7));
-    randomizeDeck(jsQuestions, randomNumber(7));
-    randomizeDeck(cssQuestions, randomNumber(7));
-    randomizeDeck(genQuestions, randomNumber(7));
-}
-
 // Function to randomize the deck passed in arguments and shuffles the random deck shuffles times
 
 function popUpStatus(message) {
@@ -214,14 +218,16 @@ function popUpStatus(message) {
 }
             
 function startQuiz(){
-    welcomeMessageNode.setAttribute("style", "display: none");
+    questionSelectNode.setAttribute("style", "display: none");
+    prevButton.setAttribute("style", "display: block;")
+    submitButton.dataset.gameMode = "game"
+    submitButton.innerText = "Next";
 }
 
-function drawCard(deck){
-    
-    if(deckCounter < deck.length){
-        let currentQuestion = deck[deckCounter];
-        popUpStatus();
+function pickCard(deck, direction){
+    let currentQuestion;
+
+    function updateQuestion(){
         quizQuestionTitleNode.innerText = `Question ${deckCounter + 1} / ${playerDeck.length}`;
         typeWriter(currentQuestion.content);
         answerNodes[0].innerText = currentQuestion.answers[0];
@@ -229,13 +235,32 @@ function drawCard(deck){
         answerNodes[2].innerText = currentQuestion.answers[2];
         answerNodes[3].innerText = currentQuestion.answers[3];  
         popUpStatus(currentQuestion.language);
+        console.log(playerDeck[deckCounter]);
         //Start question timer
     }
+
+    if(direction === "next"){
+        if(deckCounter < deck.length){
+            currentQuestion = deck[deckCounter];
+            updateQuestion();
+            deckCounter++;
+        }
+    }
+
+    
+    if(direction === "prev" && deckCounter > 1){
+        deckCounter -= 2;
+        currentQuestion = deck[deckCounter];
+        updateQuestion(); 
+        deckCounter++;
+    }
+    
 }
 
 function grader(indexOfLastQuestion) {
     let compareArray = [];
-    
+    compareArray.push(`Question-${indexOfLastQuestion}`);
+
     for(let i = 0; i < 4; i++){
         if(answerNodes[i].dataset.selected === "true"){
             compareArray.push(i);           //this is the user selected value
@@ -244,8 +269,13 @@ function grader(indexOfLastQuestion) {
         answerNodes[i].dataset.selected = "false";
         answerNodes[i].setAttribute("style", "font-weight: none; background-color: white; color: black;");
     }
-    deckCounter++;
+    
+    if(answerArray > 0 && answerArray[i][0] != `Question-${indexOfLastQuestion}`){
+        console.log("You clicked prev!");
+    }
+
     answerArray.push(compareArray);
+    console.log(answerArray);
 }
 
 function finishGame(){
@@ -263,22 +293,24 @@ function finishGame(){
 submitButton.addEventListener("click", (event) => {
     event.preventDefault;
     if(submitButton.innerText === "Start!"){
-        prevButton.setAttribute("style", "display: block;")
-        submitButton.dataset.gameMode = "game"
-        submitButton.innerText = "Next";
         randomizer();
         buildDeck(addEmUp());
         startQuiz();
-        drawCard(quizDeck);
+        pickCard(playerDeck, "next");
     } else if (deckCounter < playerDeck.length - 1){
         grader(deckCounter);                        //check grades and increment deck counter;
-        drawCard(quizDeck);
+        pickCard(playerDeck, "next");
     } else {
         grader(deckCounter);
         finishGame();
         alert("thanks for playing!");
     }
 });
+
+prevButton.addEventListener("click", (event) => {
+    event.preventDefault;
+    pickCard(playerDeck, "prev");
+})
 
 
 

@@ -16,6 +16,7 @@
         <!-- My emmet string
         div#game-window>div#timer+div#quiz-container>div.quiz-window#quiz-header>div#quiz-header-title*div#quiz-header-content>div#submit-button^^div.quiz-window#quiz-answers>div.answer-option#*4 -->
         <div id="game-window">
+            <!-- Side menu for the user to select a custom color for the text -->
             <div id="text-picker">
                 <ul id="color-menu"><span>Text</span>
                     <li class="color-menu-items"><input id="checkboxOrange" class="colorCheckbox" type="checkbox" value="rgb(238 93 67)"><div id="orangeBubble" class="bubbles"></div></li>
@@ -25,18 +26,23 @@
                     <li class="color-menu-items"><input id="checkboxYellow" class="colorCheckbox" type="checkbox" value="rgb(255 230 109)" /><div id="yellowBubble" class="bubbles"></div></li>
                 </ul>
             </div>
+            <!-- User quiz timer -->
             <div id="timer"></div>
             <div id="quiz-container">
                 <div id="quiz-header">
+                    <!-- Title box where Welcome declaration and Question x/y is displayed -->
                     <div id="header-title-div">
                         <textarea readonly id="quiz-header-title">Welcome to Code Quiz!</textarea>
                     </div>
+                    <!-- Entire quiz window -->
                     <div id="quiz-header-content">
                         <div id="quiz-question">
+                            <!-- Quiz question text -->
                             <div id="quiz-question-text">
                                 Welcome to the code quiz!  Please select at least one topic from below and a minimum of 20 questions.
                             </div>
-                            <div id="welcome-message">
+                            <!-- Welcome dialog where user can choose how many questions they would like -->
+                            <div id="question-select">
                                 <div class="deck-choices">
                                     <p>test</p><input class="ranges" type="range"  min="0" max="20" value="5" id="html"/><p class="no-select">HTML</p>
                                 </div>
@@ -51,24 +57,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="sumNode">X</div>
+                        <!-- Sum of the questions selected -->
+                        <div id="sumNode">20</div>
                         <div id="quiz-header-status"></div>
                         <button id="prev-button" class="buttons">Prev</button>
                         <button id="submit-button" class="buttons" data-game-mode="intro" data-just-clicked="false">Start!</button>
                     </div>
                 </div>
-                <div class="answer-options" id="answer-1" data-selected="false">
-                    Text  
-                </div>
-                <div class="answer-options" id="answer-2" data-selected="false">
-                    Text   
-                </div>
-                <div class="answer-options" id="answer-3" data-selected="false">
-                    Text  
-                </div>
-                <div class="answer-options" id="answer-4" data-selected="false">
-                    Text   
-                </div>
+                <!-- Answer options for user to select from, data attr selected says whether or not the user has chosen a question -->
+                <div class="answer-options" id="answer-1" data-selected="false"></div>
+                <div class="answer-options" id="answer-2" data-selected="false"></div>
+                <div class="answer-options" id="answer-3" data-selected="false"></div>
+                <div class="answer-options" id="answer-4" data-selected="false"></div>
             </div>
         </div>
     </main>
