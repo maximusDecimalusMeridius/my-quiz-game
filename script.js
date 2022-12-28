@@ -174,6 +174,7 @@ function pickCard(deck, direction){
 
     function updateQuestion(){
         quizQuestionTitleNode.innerText = `Question ${deckCounter + 1} / ${playerDeck.length}`;
+        console.log(deckCounter);
         typeWriter(currentQuestion.content);
         answerNodes[0].innerText = currentQuestion.answers[0];
         answerNodes[1].innerText = currentQuestion.answers[1];
@@ -182,12 +183,11 @@ function pickCard(deck, direction){
         popUpStatus(currentQuestion.language);
         // if(answerArray[deckCounter])
     
-    clearAnswers();
-    if(answerArray[deckCounter] != undefined) {
-        answerNodes[answerArray[deckCounter][1]].setAttribute("style", "font-weight: bold; background-color: var(--navy-blue); color: white;");
-        answerNodes[answerArray[deckCounter][1]].dataset.selected = "true";
-    }
-
+        clearAnswers();
+        if(answerArray[deckCounter] != undefined  && answerNodes[answerArray[deckCounter][1]] != undefined) {
+            answerNodes[answerArray[deckCounter][1]].setAttribute("style", "font-weight: bold; background-color: var(--navy-blue); color: white;");
+            answerNodes[answerArray[deckCounter][1]].dataset.selected = "true";
+        }
     }
 
     if(direction === "next"){
@@ -214,15 +214,15 @@ function grader(indexOfGradedQuestion) {
     compareArray.push(`Question-${indexOfGradedQuestion + 1}`);           //Set compareArray[0] to Question title
     for(let i = 0; i < 4; i++){
         if(answerNodes[i].dataset.selected === "true"){
-            compareArray.push(i);                                   //this is the user selected value
-            somethingSelected = true;
+            compareArray.push(i);                                         //Set compareArray[1] to the selected value
+            somethingSelected = true;                                     //update somethingSelected to true
         }
     }
     if(somethingSelected === false){
-        compareArray.push("");                                      //push a blank space if no answers are selected
+        compareArray.push("");                                            //If nothing is selected, push a blank space
     }
     
-    compareArray.push(playerDeck[indexOfGradedQuestion].answerIndex);
+    compareArray.push(playerDeck[indexOfGradedQuestion].answerIndex);     //Set compareArray[2] to the answer index in playerDeck[deckCounter - 1]
     answerArray[indexOfGradedQuestion] = compareArray;
     console.log(answerArray);
     clearAnswers();
@@ -358,7 +358,8 @@ submitButton.addEventListener("click", (event) => {
 
 prevButton.addEventListener("click", (event) => {
     event.preventDefault;
-    if(deckCounter >= 1){
+    if(deckCounter >= 2){
+        grader(deckCounter - 1);
         pickCard(playerDeck, "prev");
     }
 })
