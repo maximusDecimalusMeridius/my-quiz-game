@@ -164,7 +164,6 @@ function randomizeDecks(htmlCards, cssCards, jsCards, genCards) {
                 default:
                     alert('error');
                 }
-        console.log(playerDeck[i]);
         }
 }
 
@@ -174,7 +173,6 @@ function pickCard(deck, direction){
 
     function updateQuestion(){
         quizQuestionTitleNode.innerText = `Question ${deckCounter + 1} / ${playerDeck.length}`;
-        console.log(deckCounter);
         typeWriter(currentQuestion.content);
         answerNodes[0].innerText = currentQuestion.answers[0];
         answerNodes[1].innerText = currentQuestion.answers[1];
@@ -224,7 +222,6 @@ function grader(indexOfGradedQuestion) {
     
     compareArray.push(playerDeck[indexOfGradedQuestion].answerIndex);     //Set compareArray[2] to the answer index in playerDeck[deckCounter - 1]
     answerArray[indexOfGradedQuestion] = compareArray;
-    console.log(answerArray);
     clearAnswers();
 }
 
@@ -317,13 +314,10 @@ function finishGame(){
     //Calculate and display stats  **Need to run edge cases on this**
     for(let i = 0; i < answerArray.length; i++){
         if(answerArray[i][1] === ""){
-            console.log("unanswered");
             unanswered++;
         } else if (answerArray[i][1] != answerArray[i][2]){
-            console.log("not equal");
             incorrect+=1;
         } else if (answerArray[i][1] == answerArray[i][2]) {
-            console.log("equal");
             correct+=1;
         }
     }
@@ -341,19 +335,19 @@ function finishGame(){
 // and display prevButton
 submitButton.addEventListener("click", (event) => {
     event.preventDefault;
-    if(submitButton.innerText === "Start!"){
-        // randomizer(rangeNodes[0].value, rangeNodes[1].value, rangeNodes[2].value, rangeNodes[3].value);
-        // buildDeck(rangeNodes[0].value, rangeNodes[1].value, rangeNodes[2].value, rangeNodes[3].value);
-        randomizeDecks(rangeNodes[0].value, rangeNodes[1].value, rangeNodes[2].value, rangeNodes[3].value);
-        startQuiz();
-        pickCard(playerDeck, "next");
-    } else if (deckCounter < playerDeck.length){
-        grader(deckCounter - 1);                        //check grades and increment deck counter;
-        pickCard(playerDeck, "next");
-    } else {
-        grader(deckCounter - 1);
-        finishGame();
-        alert("thanks for playing!");
+    if(sumNode.innerText !== "0"){
+        if(submitButton.innerText === "Start!"){
+            randomizeDecks(rangeNodes[0].value, rangeNodes[1].value, rangeNodes[2].value, rangeNodes[3].value);
+            startQuiz();
+            pickCard(playerDeck, "next");
+        } else if (deckCounter < playerDeck.length){
+            grader(deckCounter - 1);                        //check grades and increment deck counter;
+            pickCard(playerDeck, "next");
+        } else {
+            grader(deckCounter - 1);
+            finishGame();
+            alert("thanks for playing!");
+        }
     }
 });
 
