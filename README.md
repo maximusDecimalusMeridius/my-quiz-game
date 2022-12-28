@@ -42,3 +42,9 @@ This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
 http://scripts.sil.org/OFL
 
+This favicon was generated using the following font:
+
+- Font Title: Atkinson Hyperlegible
+- Font Author: Copyright 2020 Braille Institute of America, Inc.
+- Font Source: http://fonts.gstatic.com/s/atkinsonhyperlegible/v10/9Bt23C1KxNDXMspQ1lPyU89-1h6ONRlW45GE5ZgpewSSbQ.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))
