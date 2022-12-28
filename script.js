@@ -305,8 +305,9 @@ function clearAnswers() {
 // Hides question Selection, shows previous button and updates status of submit button
 function startQuiz(){
     questionSelectNode.setAttribute("style", "display: none");
-    prevButton.setAttribute("style", "display: block;")
-    submitButton.dataset.gameMode = "game"
+    sumNode.setAttribute("style", "display: none");
+    prevButton.setAttribute("style", "display: block;");
+    submitButton.dataset.gameMode = "game";
     submitButton.innerText = "Next";
 }
 
