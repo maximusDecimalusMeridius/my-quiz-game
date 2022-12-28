@@ -6,7 +6,8 @@ let quizQuestionNode = document.getElementById("quiz-question-text");       //Qu
 let quizQuestionTitleNode = document.getElementById("quiz-header-title");   //Welcome title and "Question" title
 let prevButton = document.getElementById("prev-button");           //Submit button that displays inside of the quiz question node when called (display none/block)
 let submitButton = document.getElementById("submit-button");           //Submit button that displays inside of the quiz question node when called (display none/block)
-let quizHeaderStatusNode = document.getElementById("quiz-header-status");   //Pop up in the quiz window that will display various status messages
+let quizBannerNode = document.getElementById("quiz-header-status");   //Pop up in the quiz window that will display various status messages
+let quizBannerLanguageNode = document.getElementById("quiz-header-message");    //The message inside th pop up slider
 
 // Class elements
 let colorMenuItemNodes = document.getElementsByClassName("color-menu-items");       //Divs that hold the check boxes and bubbles for color switching
@@ -29,7 +30,7 @@ for(let i = 0; i < rangeNodes.length; i++){
 // Event listeners to make answer options glow on mouseover with delegation
 quizContainerNode.addEventListener("mouseover", (event) => {
     if(event.target.className === "answer-options" && submitButton.dataset.gameMode === "game" && event.target.dataset.selected != "true"){
-        event.target.setAttribute("style", "box-shadow: inset 0px 0px 4px 0px rgb(76 12 89)");
+        event.target.setAttribute("style", "background-color: var(--light-blue)");
     }
 });
 
@@ -230,16 +231,40 @@ function grader(indexOfGradedQuestion) {
 // Pop up manager displays the question.language for the question displayed
 function popUpStatus(message) {
 
-    quizHeaderStatusNode.innerText = message;
-    quizHeaderStatusNode.setAttribute("style", "bottom: 30px");
+    // Assigning color to template literal ${color} for borders and text coloring
+    let color;
+    if (message === "HTML"){
+        color = "var(--html-yellow)";
+    } else if (message === "CSS"){
+        color = "var(--css-blue)";
+    } else if (message === "JavaScript"){
+        color = "var(--js-pink)";
+    } else {
+        color = "var(--gen-green)";
+    }
+
+    // Set banner message, show pop up, disable submit and previous buttons until animation finishes
+    quizBannerLanguageNode.innerText = message;
+    quizBannerNode.setAttribute("style", `bottom: 50px; border: 3px solid ${color}`);
     submitButton.disabled = true;
     prevButton.disabled = true;
 
-    let timeOut = setTimeout(() =>{
-        quizHeaderStatusNode.setAttribute("style", "bottom: -20px");
+    // After half a second, pop out message
+    let slideRight = setTimeout( () => {
+        quizBannerLanguageNode.setAttribute("style", `right: 10px; color: ${color};`);
+    }, 500)
+
+    // Hide the pop up message, retaining border color and enabling buttons
+    let timeOut = setTimeout( () => {
+        quizBannerNode.setAttribute("style", `bottom: -40px; border: 3px solid ${color}`);
         submitButton.disabled = "";
         prevButton.disabled = "";
-    }, 2000);
+    }, 3000);
+
+    // Asynchronous function to set the message text back to the left .5s after the pop-up hides
+    let slideLeft = setTimeout( () => {
+        quizBannerLanguageNode.setAttribute("style", `right: 105%;  color: ${color})`);
+    }, 3500)
 
 }
 
