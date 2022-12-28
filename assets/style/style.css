@@ -103,7 +103,7 @@ header {
     justify-content: center;
     align-items: center;
     list-style-type: none;
-    background-color: var(--accentuate-fade);
+    background-color: #677ca8;
     border-radius: 5px;
     box-shadow: 5px 5px 8px black;
 }
@@ -230,7 +230,6 @@ header {
     text-align: center;
     padding-top: 6px;
     font-size: 24px;
-    text-shadow: 1px 1px 1px rgb(204, 0, 255);
 }
 
 #game-window {
@@ -301,7 +300,7 @@ header {
     position: relative;
     margin: 0 auto;
     overflow: hidden;
-    background-color: var(--light-blue);
+    background-color: #99B4D0;
     box-shadow: 2px 2px 4px black;
     border-radius: 5px;
     font-size: 18px;
