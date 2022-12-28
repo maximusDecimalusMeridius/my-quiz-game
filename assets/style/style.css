@@ -554,6 +554,10 @@ footer {
         min-width: 150px;
     }
     
+    #quiz-header-message {
+        font-size: 18px;
+    }
+
     #quiz-container {
         grid-template:
             "quiz-header" 80%
