@@ -333,7 +333,7 @@ submitButton.addEventListener("click", (event) => {
 
 prevButton.addEventListener("click", (event) => {
     event.preventDefault;
-    if(deckCounter > 1){
+    if(deckCounter >= 1){
         pickCard(playerDeck, "prev");
     }
 })
@@ -827,7 +827,7 @@ let jsQuestion11 = new quizQuestion(
 )
 let jsQuestion12 = new quizQuestion(
     "Question 12",
-    "If myString = 'The Lone Rangers', how would we return the letter 's'?"
+    "If myString = 'The Lone Rangers', how would we return the letter 's'?",
     [
         "myString.indexOf(s)",
         "myString.charAt(myString.length)",
