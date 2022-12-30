@@ -464,7 +464,7 @@ let htmlQuestion5 = new quizQuestion(
     [
         "data: attribute",
         "[data] = [attribute]",
-        "data-attribute ='property'",
+        "data-attribute = 'property'",
         "dataset.property"
     ],
     2,
@@ -616,72 +616,72 @@ let htmlQuestion15 = new quizQuestion(
 )
 let htmlQuestion16 = new quizQuestion(
     "Question 16",
-    "I'm question #16, practice typing with me.",
+    "Which of the following can be used for counting or incrementing list items.",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "<ul>",
+        "<ol>",
+        "<uol>",
+        "<list>"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    1,
+    "Order!",
+    "https://www.w3schools.com/html/html_lists_ordered.asp",
     "HTML"
 )
 let htmlQuestion17 = new quizQuestion(
     "Question 17",
-    "I'm question #17, practice typing with me.",
+    "This is the name of the icon used for your webpage's tab in the browser",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "favoriteIcon.png",
+        "browserIcon.ico",
+        "favicon.ico",
+        "browsicon.ico"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    2,
+    "It's my fave",
+    "https://favicon.io/",
     "HTML"
 )
 let htmlQuestion18 = new quizQuestion(
     "Question 18",
-    "I'm question #18, practice typing with me.",
+    "This is where we might include information about the website such as contact or site info, or links to resources and credits.",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "<footer></footer>",
+        "<foot></foot>",
+        "<p></p>",
+        "<info></info>"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    0,
+    "Opposite of the <header> element",
+    "https://www.w3schools.com/tags/tag_footer.asp",
     "HTML"
 )
 let htmlQuestion19 = new quizQuestion(
     "Question 19",
-    "I'm question #19, practice typing with me.",
+    "This is the correct way to add a link to an image",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "<a><img></a>",
+        "<img><a></img>",
+        "<div img><a></a>",
+        "<a><img>"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    0,
+    "Wrap it up!",
+    "https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_image_link",
     "HTML"
 )
 let htmlQuestion20 = new quizQuestion(
     "Question 20",
-    "I'm question #20, practice typing with me.",
+    "You can set a default URL for the links on your site using which tag",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "<link>",
+        "<base>",
+        "<href>",
+        "<a>"
     ],
     3,
-    "Here is your hint",
-    "Google Link",
+    "Acts as a basis for all other links",
+    "https://www.w3schools.com/tags/tag_base.asp",
     "HTML"
 )
 
@@ -824,11 +824,11 @@ let jsQuestion10 = new quizQuestion(
     [
         "slice(), dice(), front(), back()",
         "shift(), pop(), splice(), delete",
-        "unshift(), push()",
+        "unshift(), push(), splice()",
         "return, break, continue"
     ],
     2,
-    "Here is your hint",
+    "It's UNacceptable to budge at the front, just push your way to the back of the line.",
     "https://www.geeksforgeeks.org/what-is-the-difference-between-unshift-and-push-method-in-javascript/",
     "JavaScript"
 )
@@ -946,30 +946,30 @@ let jsQuestion18 = new quizQuestion(
 )
 let jsQuestion19 = new quizQuestion(
     "Question 19",
-    "I'm question #19, practice typing with me.",
+    "This powerful array method can both remove and add elements to arrays",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "splice()",
+        "slice()",
+        "thrice()",
+        "addRemove()"
     ],
     3,
-    "Here is your hint",
-    "Google Link",
+    "The answer rhymes with two other choices ;)",
+    "https://www.javascripttutorial.net/javascript-array-splice/",
     "JavaScript"
 )
 let jsQuestion20 = new quizQuestion(
     "Question 20",
-    "I'm question #20, practice typing with me.",
+    "True or False: Boolean has just two values, true and false",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "!!!true",
+        "let TRUE = false;\nreturn TRUE;",
+        "!false",
+        "frue"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    2,
+    "True!",
+    "https://www.w3schools.com/jsref/jsref_obj_boolean.asp",
     "JavaScript"
 )
 
