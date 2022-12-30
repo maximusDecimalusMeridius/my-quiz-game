@@ -991,61 +991,61 @@ let cssQuestion1 = new quizQuestion(
 
 let cssQuestion2 = new quizQuestion(
     "Question 2",
-    "I'm question #2, practice typing with me.",
+    "The '.' selector in .div is a selector for:",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "id",
+        "class",
+        "child",
+        "parent"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    1,
+    "This is assigned in your HTML",
+    "https://www.w3schools.com/css/css_selectors.asp",
     "CSS"
 )
 
 let cssQuestion3 = new quizQuestion(
     "Question 3",
-    "I'm question #3, practice typing with me.",
+    "The '#' selector in #div is a selector for:",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "id",
+        "class",
+        "child",
+        "parent"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    0,
+    "This is assigned in your HTML",
+    "https://www.w3schools.com/css/css_selectors.asp",
     "CSS"
 )
 
 let cssQuestion4 = new quizQuestion(
     "Question 4",
-    "I'm question #2, practice typing with me.",
+    "Choose the following correct syntax for setting a border:",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "1px border('red');",
+        "border: 1px solid chartreuse;",
+        "border-radius: 3px;",
+        "border-shadow: 1px solid red;"
     ],
     3,
-    "Here is your hint",
-    "Google Link",
+    "The box-shadow property is used to set shadows",
+    "https://www.w3schools.com/css/css_border_shorthand.asp",
     "CSS"
 )
 
 let cssQuestion5 = new quizQuestion(
     "Question 5",
-    "I'm question #5, practice typing with me.",
+    "We can make a circle by setting border-radius to ____",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "0",
+        "5px",
+        "Half the width",
+        "50%"
     ],
     3,
-    "Here is your hint",
-    "Google Link",
+    "It's a coin flip",
+    "https://css-tricks.com/almanac/properties/b/border-radius/",
     "CSS"
 )
 
