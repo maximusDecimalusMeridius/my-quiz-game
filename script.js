@@ -792,7 +792,7 @@ let jsQuestion7 = new quizQuestion(
 )
 let jsQuestion8 = new quizQuestion(
     "Question 8",
-    "The following code can be used to find a random number between 0 and max",
+    "The following code can be used to find a random number greater than 0 and less than max",
     [
         "Math.random(Math.floor() * max)",
         "max(Math.floor(Math.random()))",
@@ -824,12 +824,12 @@ let jsQuestion10 = new quizQuestion(
     [
         "slice(), dice(), front(), back()",
         "shift(), pop(), splice(), delete",
-        "unshift(), push(), join()",
+        "unshift(), push()",
         "return, break, continue"
     ],
     2,
     "Here is your hint",
-    "Google Link",
+    "https://www.geeksforgeeks.org/what-is-the-difference-between-unshift-and-push-method-in-javascript/",
     "JavaScript"
 )
 let jsQuestion11 = new quizQuestion(
@@ -890,58 +890,58 @@ let jsQuestion14 = new quizQuestion(
 )
 let jsQuestion15 = new quizQuestion(
     "Question 15",
-    "I'm question #15, practice typing with me.",
+    "These methods can be used on strings to convert them to all lowercase or all uppercase:",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "little(), bigify()",
+        "tolowercase(), touppercase()",
+        "toLowerCase(), toUpperCase()",
+        "makeLower(), makeUpper()"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    2,
+    "camelCase",
+    "https://www.w3schools.com/jsref/jsref_tolowercase.asp",
     "JavaScript"
 )
 let jsQuestion16 = new quizQuestion(
     "Question 16",
-    "I'm question #16, practice typing with me.",
+    "What is the correct 'for loop' syntax?",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "for(i++, i < myArray.length, i = 0){\n}",
+        "for(let i = 0 < myArray.length < i++){\n}",
+        "for(if i === true; i++){\n}",
+        "for(let i = 0; i < myArray.length; i++){\n}"
     ],
     3,
-    "Here is your hint",
-    "Google Link",
+    "3 parts to declaring a for loop: Initialize, check condition, increment",
+    "https://www.w3schools.com/js/js_loop_for.asp",
     "JavaScript"
 )
 let jsQuestion17 = new quizQuestion(
     "Question 17",
-    "I'm question #17, practice typing with me.",
+    "What does the following code output:\nlet var;\n\n if(var > 0){\n\treturn true;\n}",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "True",
+        "False",
+        "BUG! That code won't run!",
+        "'var'"
     ],
     3,
-    "Here is your hint",
-    "Google Link",
+    "Is var defined?",
+    "https://www.w3schools.com/js/js_variables.asp",
     "JavaScript"
 )
 let jsQuestion18 = new quizQuestion(
     "Question 18",
-    "I'm question #18, practice typing with me.",
+    "In JavaScript, 'document' refers to what?",
     [
-        "Answer 1",
-        "Answer 2",
-        "Answer 3",
-        "Answer 4"
+        "'./script.js.",
+        "The HTML DOM Document object",
+        "A comment",
+        "A Github README"
     ],
-    3,
-    "Here is your hint",
-    "Google Link",
+    1,
+    "document.querySelector('') is one way to access the 'document'",
+    "https://www.w3schools.com/js/js_htmldom_document.asp",
     "JavaScript"
 )
 let jsQuestion19 = new quizQuestion(
