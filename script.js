@@ -733,7 +733,7 @@ let jsQuestion3 = new quizQuestion(
 
 let jsQuestion4 = new quizQuestion(
     "Question 4",
-    "This type of conditional will continue to run whilst its condition is false",
+    "This type of conditional will continue to run whilst its condition is true",
     [
         "if/else",
         "if/else if",
